@@ -1,9 +1,12 @@
+"""  Программа для захвата частей экрана доты  """
+
 import pygetwindow as gw
 import numpy as np
 import mss
 import mss.tools
 import os
 import time
+
 
 # Название окна
 dota_title = "Dota 2"
