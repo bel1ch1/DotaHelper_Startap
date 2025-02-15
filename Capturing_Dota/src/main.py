@@ -49,11 +49,11 @@ def capture_dota2_window():
             combined_image.save(filename)
             print(f"Скриншот сохранен: {filename}")
 
-            # Обработка моделью
-            process(filename)
+            # # Обработка моделью
+            # process(filename)
 
-            # Удаление скрина
-            os.remove(filename)
+            # # Удаление скрина
+            # os.remove(filename)
 
     else:
         print("Окно Dota 2 не активно или не найдено.")
@@ -69,6 +69,6 @@ def process(filename):
 
 # Точка входа
 if __name__ == "__main__":
-    for i in range(100):
+    for i in range(1000):
         capture_dota2_window()
         time.sleep(10)
