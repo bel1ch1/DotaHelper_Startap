@@ -46,7 +46,7 @@ def capture_dota2_window():
 
             # Сохранение
             filename = f'combined_screenshot_{int(time.time())}.png'
-            combined_image.save(filename)
+            combined_image.save(f'Capturing_Dota/Captured_screens/{filename}')
             print(f"Скриншот сохранен: {filename}")
 
             # # Обработка моделью
@@ -63,7 +63,7 @@ def process(filename):
     """
     Заглушка для обработки изображения с помощью модели распознавания.
     """
-    print(f"Изображение {filename} передано в YOLO для обработки.")
+    print(f"Изображение {filename} передано в модель.")
     time.sleep(1)
 
 
