@@ -46,7 +46,7 @@ def capture_dota2_window():
 
             # Сохранение
             filename = f'combined_screenshot_{int(time.time())}.png'
-            combined_image.save(f'Capturing_Dota/Captured_screens/{filename}')
+            combined_image.save(f'C:/Mirea_Projects/DotaHelper_Startap/Capturing_Dota/experiments/{filename}')
             print(f"Скриншот сохранен: {filename}")
 
             # # Обработка моделью
