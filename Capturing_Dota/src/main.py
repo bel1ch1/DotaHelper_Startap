@@ -1,11 +1,18 @@
-"""  Программа для захвата частей экрана доты  """
-
 import mss
 import mss.tools
 import time
+import cv2
 from PIL import Image
 import pygetwindow as gw
 import os
+from ultralytics import YOLO
+
+
+# Путь к модели YOLO
+model_path = 'C:/Mirea_Projects/DotaHelper_Startap/Capturing_Dota/ml_model/best_1.pt'
+
+# Загрузка модели
+model = YOLO(model_path)
 
 def capture_dota2_window():
     # Находим окно Dota 2
@@ -46,29 +53,60 @@ def capture_dota2_window():
 
             # Сохранение
             filename = f'combined_screenshot_{int(time.time())}.png'
-            combined_image.save(f'C:/Mirea_Projects/DotaHelper_Startap/Capturing_Dota/experiments/{filename}')
+            save_path = f'C:/Mirea_Projects/DotaHelper_Startap/Capturing_Dota/experiments/{filename}'
+            combined_image.save(save_path)
             print(f"Скриншот сохранен: {filename}")
 
-            # # Обработка моделью
-            # process(filename)
+            # Обработка моделью
+            process(save_path)
 
-            # # Удаление скрина
-            # os.remove(filename)
+            # Удаление скрина (опционально)
+            os.remove(save_path)
 
     else:
         print("Окно Dota 2 не активно или не найдено.")
 
 
-def process(filename):
+def process(image_path):
     """
-    Заглушка для обработки изображения с помощью модели распознавания.
+    Обработка изображения с помощью модели YOLO.
     """
-    print(f"Изображение {filename} передано в модель.")
-    time.sleep(1)
+    # Загрузка изображения
+    image = cv2.imread(image_path)
+
+    # Приведение изображения к размеру 640x640
+    resized_image = cv2.resize(image, (600, 440))
+
+    # Выполнение предсказания
+    results = model(resized_image)
+
+    # Порог уверенности
+    confidence_threshold = 0.6
+
+    # Список для хранения распознанных классов
+    detected_classes = []
+
+    # Обработка результатов
+    for result in results:
+        boxes = result.boxes  # Bounding boxes
+        for box in boxes:
+            class_id = int(box.cls)  # Класс
+            confidence = float(box.conf)  # Уверенность
+            if confidence >= confidence_threshold:
+                class_name = model.names[class_id]  # Название класса
+                detected_classes.append((class_name, confidence))
+
+    # Вывод списка распознанных классов
+    if detected_classes:
+        print("Распознанные классы:")
+        for class_name, confidence in detected_classes:
+            print(f"Class: {class_name}, Confidence: {confidence:.2f}")
+    else:
+        print("Ничего не распознано.")
 
 
 # Точка входа
 if __name__ == "__main__":
     for i in range(1000):
         capture_dota2_window()
-        time.sleep(10)
+        time.sleep(3)
