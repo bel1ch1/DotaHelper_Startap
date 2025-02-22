@@ -1,3 +1,4 @@
+import json
 import mss
 import mss.tools
 import time
@@ -7,8 +8,7 @@ import pygetwindow as gw
 import os
 from ultralytics import YOLO
 
-
-# Путь к модели YOLO
+# лежит в другом месте
 model_path = 'C:/Mirea_Projects/DotaHelper_Startap/Capturing_Dota/ml_model/best_1.pt'
 
 # Загрузка модели
@@ -74,27 +74,49 @@ def process(image_path):
     # Загрузка изображения
     image = cv2.imread(image_path)
 
-    # Приведение изображения к размеру 640x640
+    # Сжатие
     resized_image = cv2.resize(image, (600, 440))
 
-    # Выполнение предсказания
+    # Обработка моделью
     results = model(resized_image)
 
     # Порог уверенности
-    confidence_threshold = 0.6
+    confidence_threshold = 0.7
 
     # Список для хранения распознанных классов
     detected_classes = []
 
+    # Флаг для проверки наличия героя
+    hero_detected = False
+
     # Обработка результатов
     for result in results:
-        boxes = result.boxes  # Bounding boxes
+        boxes = result.boxes
         for box in boxes:
             class_id = int(box.cls)  # Класс
             confidence = float(box.conf)  # Уверенность
             if confidence >= confidence_threshold:
                 class_name = model.names[class_id]  # Название класса
                 detected_classes.append((class_name, confidence))
+                if "hero" in class_name.lower():
+                    hero_detected = True
+
+    if hero_detected:
+        json_data = {
+            "items": []
+        }
+        for class_name, confidence in detected_classes:
+            json_data["items"].append({
+                "class": class_name,
+                "confidence": confidence
+            })
+
+        # Сохранение JSON
+        json_filename = f'results_{int(time.time())}.json'
+        json_save_path = f'C:/Mirea_Projects/DotaHelper_Startap/Capturing_Dota/experiments/{json_filename}'
+        with open(json_save_path, 'w') as json_file:
+            json.dump(json_data, json_file, indent=4)
+        print(f"JSON сохранен: {json_filename}")
 
     # Вывод списка распознанных классов
     if detected_classes:
@@ -107,6 +129,7 @@ def process(image_path):
 
 # Точка входа
 if __name__ == "__main__":
-    for i in range(1000):
+    while True:
         capture_dota2_window()
-        time.sleep(3)
+
+        time.sleep(0.5)
