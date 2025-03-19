@@ -42,45 +42,54 @@ def save_new_match_ids(new_match_ids):
 
 # Основной цикл
 while True:
-    # URL запроса
-    url = "https://api.opendota.com/api/publicMatches"
+    try:
+        # URL запроса
+        url = "https://api.opendota.com/api/publicMatches"
 
-    # Параметры запроса
-    params = {
-        "min_rank": 60,  # Минимальный рейтинг (6k)
-        "limit": 100,     # Количество матчей (максимум 100)
-    }
+        # Параметры запроса
+        params = {
+            "min_rank": 60,  # Минимальный рейтинг (6k)
+            "limit": 100,     # Количество матчей (максимум 100)
+        }
 
-    # Отправка запроса
-    response = requests.get(url, params=params)
+        # Отправка запроса
+        response = requests.get(url, params=params, timeout=10)  # Таймаут 10 секунд
 
-    # Проверка успешности запроса
-    if response.status_code == 200:
-        matches = response.json()
+        # Проверка успешности запроса
+        if response.status_code == 200:
+            matches = response.json()
 
-        # Фильтрация матчей
-        new_match_ids = set()
-        for match in matches:
-            # Проверяем, что game_mode = 22 (All Pick)
-            if match.get("game_mode") == 22:
-                # Проверяем, что 82 (Meepo) есть в radiant_team или dire_team
-                if 82 in match.get("radiant_team", []) or 82 in match.get("dire_team", []):
-                    new_match_ids.add(match["match_id"])
+            # Фильтрация матчей
+            new_match_ids = set()
+            for match in matches:
+                # Проверяем, что game_mode = 22 (All Pick)
+                if match.get("game_mode") == 22:
+                    # Проверяем, что 82 (Meepo) есть в radiant_team или dire_team
+                    if 82 in match.get("radiant_team", []) or 82 in match.get("dire_team", []):
+                        new_match_ids.add(match["match_id"])
 
-        # Загружаем существующие данные
-        existing_data = load_existing_match_ids()
+            # Загружаем существующие данные
+            existing_data = load_existing_match_ids()
 
-        # Находим новые match_id
-        unique_new_match_ids = new_match_ids - set(map(int, existing_data.keys()))  # Преобразуем ключи в int для сравнения
+            # Находим новые match_id
+            unique_new_match_ids = new_match_ids - set(map(int, existing_data.keys()))  # Преобразуем ключи в int для сравнения
 
-        # Если есть новые match_id, сохраняем их в файл
-        if unique_new_match_ids:
-            print(f"Найдены новые Match ID: {unique_new_match_ids}")
-            save_new_match_ids(unique_new_match_ids)
+            # Если есть новые match_id, сохраняем их в файл
+            if unique_new_match_ids:
+                print(f"Найдены новые Match ID: {unique_new_match_ids}")
+                save_new_match_ids(unique_new_match_ids)
+            else:
+                print("Новых Match ID не найдено.")
         else:
-            print("Новых Match ID не найдено.")
-    else:
-        print("Ошибка:", response.status_code, response.text)
+            print(f"Ошибка: Сервер вернул код {response.status_code}. Ответ: {response.text}")
+
+    except requests.exceptions.RequestException as e:
+        # Обработка ошибок, связанных с запросом
+        print(f"Ошибка при выполнении запроса: {e}")
+
+    except Exception as e:
+        # Обработка всех остальных ошибок
+        print(f"Неожиданная ошибка: {e}")
 
     # Пауза на 60 секунд перед следующим запросом
     time.sleep(60)
