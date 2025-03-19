@@ -86,10 +86,12 @@ while True:
     except requests.exceptions.RequestException as e:
         # Обработка ошибок, связанных с запросом
         print(f"Ошибка при выполнении запроса: {e}")
+        time.sleep(10)
 
     except Exception as e:
         # Обработка всех остальных ошибок
         print(f"Неожиданная ошибка: {e}")
+        time.sleep(10)
 
     # Пауза на 60 секунд перед следующим запросом
     time.sleep(60)
