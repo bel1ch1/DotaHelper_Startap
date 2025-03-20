@@ -1,0 +1,16 @@
+{
+  heroStats{
+    guide(
+      heroId:82
+      positionId:POSITION_2
+    )
+    {
+      matchCount
+    	guides(
+        take:235
+      ){
+				matchId
+      }
+    }
+  }
+}
