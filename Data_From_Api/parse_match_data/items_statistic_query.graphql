@@ -1,0 +1,14 @@
+query{
+	heroStats{
+    itemFullPurchase(
+      heroId:82
+      positionIds:POSITION_2
+    ){
+      time
+      itemId
+      matchCount
+      winCount
+      winsAverage
+    }
+  }
+}
