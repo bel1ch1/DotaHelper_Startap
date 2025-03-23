@@ -1,0 +1,1894 @@
+{
+    "data": {
+        "match": {
+            "didRadiantWin": false,
+            "durationSeconds": 2333,
+            "radiantKills": [
+                0,
+                0,
+                0,
+                1,
+                0,
+                1,
+                3,
+                1,
+                1,
+                0,
+                1,
+                2,
+                1,
+                1,
+                4,
+                0,
+                2,
+                0,
+                2,
+                0,
+                1,
+                3,
+                1,
+                2,
+                2,
+                3,
+                0,
+                3,
+                1,
+                0,
+                0,
+                1,
+                2,
+                0,
+                0,
+                2,
+                2,
+                0,
+                1,
+                0
+            ],
+            "direKills": [
+                0,
+                0,
+                1,
+                0,
+                0,
+                1,
+                1,
+                1,
+                0,
+                0,
+                1,
+                3,
+                0,
+                2,
+                1,
+                2,
+                1,
+                2,
+                1,
+                3,
+                3,
+                3,
+                0,
+                1,
+                2,
+                1,
+                4,
+                3,
+                1,
+                0,
+                0,
+                0,
+                2,
+                3,
+                2,
+                2,
+                2,
+                0,
+                4,
+                0
+            ],
+            "players": [
+                {
+                    "isRadiant": true,
+                    "heroId": 42,
+                    "hero": {
+                        "shortName": "skeleton_king"
+                    },
+                    "position": "POSITION_3",
+                    "playbackData": {
+                        "purchaseEvents": [
+                            {
+                                "time": -89,
+                                "itemId": 34
+                            },
+                            {
+                                "time": -89,
+                                "itemId": 16
+                            },
+                            {
+                                "time": -89,
+                                "itemId": 35
+                            },
+                            {
+                                "time": -89,
+                                "itemId": 11
+                            },
+                            {
+                                "time": -89,
+                                "itemId": 44
+                            },
+                            {
+                                "time": -89,
+                                "itemId": 237
+                            },
+                            {
+                                "time": -11,
+                                "itemId": 16
+                            },
+                            {
+                                "time": 3,
+                                "itemId": 35
+                            },
+                            {
+                                "time": 137,
+                                "itemId": 29
+                            },
+                            {
+                                "time": 166,
+                                "itemId": 36
+                            },
+                            {
+                                "time": 192,
+                                "itemId": 39
+                            },
+                            {
+                                "time": 356,
+                                "itemId": 4
+                            },
+                            {
+                                "time": 368,
+                                "itemId": 43
+                            },
+                            {
+                                "time": 368,
+                                "itemId": 42
+                            },
+                            {
+                                "time": 429,
+                                "itemId": 2
+                            },
+                            {
+                                "time": 462,
+                                "itemId": 50
+                            },
+                            {
+                                "time": 1042,
+                                "itemId": 54
+                            },
+                            {
+                                "time": 1202,
+                                "itemId": 32
+                            },
+                            {
+                                "time": 1202,
+                                "itemId": 137
+                            },
+                            {
+                                "time": 1458,
+                                "itemId": 43
+                            },
+                            {
+                                "time": 1458,
+                                "itemId": 43
+                            },
+                            {
+                                "time": 1459,
+                                "itemId": 42
+                            },
+                            {
+                                "time": 1459,
+                                "itemId": 42
+                            },
+                            {
+                                "time": 1558,
+                                "itemId": 1
+                            },
+                            {
+                                "time": 1677,
+                                "itemId": 9
+                            },
+                            {
+                                "time": 1820,
+                                "itemId": 55
+                            },
+                            {
+                                "time": 1822,
+                                "itemId": 12
+                            },
+                            {
+                                "time": 1822,
+                                "itemId": 85
+                            },
+                            {
+                                "time": 1822,
+                                "itemId": 86
+                            },
+                            {
+                                "time": 1834,
+                                "itemId": 46
+                            },
+                            {
+                                "time": 1926,
+                                "itemId": 111
+                            },
+                            {
+                                "time": 1951,
+                                "itemId": 112
+                            },
+                            {
+                                "time": 2244,
+                                "itemId": 22
+                            },
+                            {
+                                "time": 2244,
+                                "itemId": 18
+                            }
+                        ]
+                    }
+                },
+                {
+                    "isRadiant": true,
+                    "heroId": 114,
+                    "hero": {
+                        "shortName": "monkey_king"
+                    },
+                    "position": "POSITION_1",
+                    "playbackData": {
+                        "purchaseEvents": [
+                            {
+                                "time": -84,
+                                "itemId": 11
+                            },
+                            {
+                                "time": -84,
+                                "itemId": 14
+                            },
+                            {
+                                "time": -83,
+                                "itemId": 14
+                            },
+                            {
+                                "time": -83,
+                                "itemId": 16
+                            },
+                            {
+                                "time": -80,
+                                "itemId": 44
+                            },
+                            {
+                                "time": 206,
+                                "itemId": 20
+                            },
+                            {
+                                "time": 206,
+                                "itemId": 74
+                            },
+                            {
+                                "time": 208,
+                                "itemId": 34
+                            },
+                            {
+                                "time": 208,
+                                "itemId": 35
+                            },
+                            {
+                                "time": 210,
+                                "itemId": 20
+                            },
+                            {
+                                "time": 210,
+                                "itemId": 74
+                            },
+                            {
+                                "time": 250,
+                                "itemId": 75
+                            },
+                            {
+                                "time": 250,
+                                "itemId": 36
+                            },
+                            {
+                                "time": 329,
+                                "itemId": 29
+                            },
+                            {
+                                "time": 331,
+                                "itemId": 39
+                            },
+                            {
+                                "time": 534,
+                                "itemId": 8
+                            },
+                            {
+                                "time": 815,
+                                "itemId": 8
+                            },
+                            {
+                                "time": 815,
+                                "itemId": 240
+                            },
+                            {
+                                "time": 845,
+                                "itemId": 168
+                            },
+                            {
+                                "time": 894,
+                                "itemId": 4
+                            },
+                            {
+                                "time": 894,
+                                "itemId": 2
+                            },
+                            {
+                                "time": 924,
+                                "itemId": 50
+                            },
+                            {
+                                "time": 993,
+                                "itemId": 46
+                            },
+                            {
+                                "time": 997,
+                                "itemId": 32
+                            },
+                            {
+                                "time": 1420,
+                                "itemId": 52
+                            },
+                            {
+                                "time": 1479,
+                                "itemId": 5
+                            },
+                            {
+                                "time": 1538,
+                                "itemId": 139
+                            },
+                            {
+                                "time": 1874,
+                                "itemId": 21
+                            },
+                            {
+                                "time": 1874,
+                                "itemId": 8
+                            },
+                            {
+                                "time": 1981,
+                                "itemId": 115
+                            },
+                            {
+                                "time": 1981,
+                                "itemId": 116
+                            },
+                            {
+                                "time": 2178,
+                                "itemId": 8
+                            },
+                            {
+                                "time": 2178,
+                                "itemId": 17
+                            },
+                            {
+                                "time": 2178,
+                                "itemId": 142
+                            },
+                            {
+                                "time": 2178,
+                                "itemId": 143
+                            },
+                            {
+                                "time": 2210,
+                                "itemId": 46
+                            },
+                            {
+                                "time": 2211,
+                                "itemId": 46
+                            }
+                        ]
+                    }
+                },
+                {
+                    "isRadiant": true,
+                    "heroId": 6,
+                    "hero": {
+                        "shortName": "drow_ranger"
+                    },
+                    "position": "POSITION_2",
+                    "playbackData": {
+                        "purchaseEvents": [
+                            {
+                                "time": -89,
+                                "itemId": 14
+                            },
+                            {
+                                "time": -89,
+                                "itemId": 20
+                            },
+                            {
+                                "time": -76,
+                                "itemId": 16
+                            },
+                            {
+                                "time": -67,
+                                "itemId": 44
+                            },
+                            {
+                                "time": 5,
+                                "itemId": 74
+                            },
+                            {
+                                "time": 33,
+                                "itemId": 75
+                            },
+                            {
+                                "time": 248,
+                                "itemId": 22
+                            },
+                            {
+                                "time": 310,
+                                "itemId": 17
+                            },
+                            {
+                                "time": 342,
+                                "itemId": 234
+                            },
+                            {
+                                "time": 366,
+                                "itemId": 236
+                            },
+                            {
+                                "time": 413,
+                                "itemId": 29
+                            },
+                            {
+                                "time": 574,
+                                "itemId": 22
+                            },
+                            {
+                                "time": 596,
+                                "itemId": 216
+                            },
+                            {
+                                "time": 632,
+                                "itemId": 18
+                            },
+                            {
+                                "time": 656,
+                                "itemId": 169
+                            },
+                            {
+                                "time": 658,
+                                "itemId": 170
+                            },
+                            {
+                                "time": 845,
+                                "itemId": 4
+                            },
+                            {
+                                "time": 845,
+                                "itemId": 2
+                            },
+                            {
+                                "time": 846,
+                                "itemId": 216
+                            },
+                            {
+                                "time": 883,
+                                "itemId": 50
+                            },
+                            {
+                                "time": 922,
+                                "itemId": 46
+                            },
+                            {
+                                "time": 1110,
+                                "itemId": 1122
+                            },
+                            {
+                                "time": 1261,
+                                "itemId": 146
+                            },
+                            {
+                                "time": 1282,
+                                "itemId": 147
+                            },
+                            {
+                                "time": 1291,
+                                "itemId": 23
+                            },
+                            {
+                                "time": 1291,
+                                "itemId": 593
+                            },
+                            {
+                                "time": 1301,
+                                "itemId": 216
+                            },
+                            {
+                                "time": 1303,
+                                "itemId": 38
+                            },
+                            {
+                                "time": 1450,
+                                "itemId": 101
+                            },
+                            {
+                                "time": 1450,
+                                "itemId": 262
+                            },
+                            {
+                                "time": 1541,
+                                "itemId": 262
+                            },
+                            {
+                                "time": 1550,
+                                "itemId": 102
+                            },
+                            {
+                                "time": 1550,
+                                "itemId": 263
+                            },
+                            {
+                                "time": 1644,
+                                "itemId": 22
+                            },
+                            {
+                                "time": 1700,
+                                "itemId": 60
+                            },
+                            {
+                                "time": 1824,
+                                "itemId": 22
+                            },
+                            {
+                                "time": 1878,
+                                "itemId": 46
+                            },
+                            {
+                                "time": 1908,
+                                "itemId": 23
+                            },
+                            {
+                                "time": 1932,
+                                "itemId": 4205
+                            },
+                            {
+                                "time": 2085,
+                                "itemId": 21
+                            },
+                            {
+                                "time": 2086,
+                                "itemId": 108
+                            },
+                            {
+                                "time": 2140,
+                                "itemId": 216
+                            },
+                            {
+                                "time": 2141,
+                                "itemId": 216
+                            }
+                        ]
+                    }
+                },
+                {
+                    "isRadiant": true,
+                    "heroId": 14,
+                    "hero": {
+                        "shortName": "pudge"
+                    },
+                    "position": "POSITION_4",
+                    "playbackData": {
+                        "purchaseEvents": [
+                            {
+                                "time": -89,
+                                "itemId": 42
+                            },
+                            {
+                                "time": -89,
+                                "itemId": 43
+                            },
+                            {
+                                "time": -89,
+                                "itemId": 1123
+                            },
+                            {
+                                "time": -89,
+                                "itemId": 44
+                            },
+                            {
+                                "time": -89,
+                                "itemId": 216
+                            },
+                            {
+                                "time": -89,
+                                "itemId": 34
+                            },
+                            {
+                                "time": 128,
+                                "itemId": 38
+                            },
+                            {
+                                "time": 129,
+                                "itemId": 216
+                            },
+                            {
+                                "time": 162,
+                                "itemId": 29
+                            },
+                            {
+                                "time": 249,
+                                "itemId": 28
+                            },
+                            {
+                                "time": 317,
+                                "itemId": 87
+                            },
+                            {
+                                "time": 317,
+                                "itemId": 88
+                            },
+                            {
+                                "time": 326,
+                                "itemId": 188
+                            },
+                            {
+                                "time": 329,
+                                "itemId": 42
+                            },
+                            {
+                                "time": 330,
+                                "itemId": 43
+                            },
+                            {
+                                "time": 374,
+                                "itemId": 46
+                            },
+                            {
+                                "time": 377,
+                                "itemId": 188
+                            },
+                            {
+                                "time": 463,
+                                "itemId": 179
+                            },
+                            {
+                                "time": 484,
+                                "itemId": 180
+                            },
+                            {
+                                "time": 514,
+                                "itemId": 46
+                            },
+                            {
+                                "time": 674,
+                                "itemId": 59
+                            },
+                            {
+                                "time": 730,
+                                "itemId": 46
+                            },
+                            {
+                                "time": 813,
+                                "itemId": 57
+                            },
+                            {
+                                "time": 993,
+                                "itemId": 233
+                            },
+                            {
+                                "time": 1017,
+                                "itemId": 232
+                            },
+                            {
+                                "time": 1337,
+                                "itemId": 1
+                            },
+                            {
+                                "time": 1416,
+                                "itemId": 21
+                            },
+                            {
+                                "time": 1622,
+                                "itemId": 609
+                            },
+                            {
+                                "time": 1917,
+                                "itemId": 60
+                            },
+                            {
+                                "time": 1955,
+                                "itemId": 21
+                            },
+                            {
+                                "time": 2132,
+                                "itemId": 23
+                            }
+                        ]
+                    }
+                },
+                {
+                    "isRadiant": true,
+                    "heroId": 27,
+                    "hero": {
+                        "shortName": "shadow_shaman"
+                    },
+                    "position": "POSITION_5",
+                    "playbackData": {
+                        "purchaseEvents": [
+                            {
+                                "time": -89,
+                                "itemId": 44
+                            },
+                            {
+                                "time": -89,
+                                "itemId": 216
+                            },
+                            {
+                                "time": -89,
+                                "itemId": 244
+                            },
+                            {
+                                "time": -89,
+                                "itemId": 43
+                            },
+                            {
+                                "time": -89,
+                                "itemId": 42
+                            },
+                            {
+                                "time": -89,
+                                "itemId": 1123
+                            },
+                            {
+                                "time": 124,
+                                "itemId": 38
+                            },
+                            {
+                                "time": 125,
+                                "itemId": 42
+                            },
+                            {
+                                "time": 125,
+                                "itemId": 43
+                            },
+                            {
+                                "time": 257,
+                                "itemId": 57
+                            },
+                            {
+                                "time": 425,
+                                "itemId": 43
+                            },
+                            {
+                                "time": 587,
+                                "itemId": 42
+                            },
+                            {
+                                "time": 588,
+                                "itemId": 43
+                            },
+                            {
+                                "time": 641,
+                                "itemId": 233
+                            },
+                            {
+                                "time": 644,
+                                "itemId": 42
+                            },
+                            {
+                                "time": 798,
+                                "itemId": 42
+                            },
+                            {
+                                "time": 798,
+                                "itemId": 43
+                            },
+                            {
+                                "time": 799,
+                                "itemId": 188
+                            },
+                            {
+                                "time": 840,
+                                "itemId": 59
+                            },
+                            {
+                                "time": 840,
+                                "itemId": 232
+                            },
+                            {
+                                "time": 869,
+                                "itemId": 42
+                            },
+                            {
+                                "time": 869,
+                                "itemId": 43
+                            },
+                            {
+                                "time": 870,
+                                "itemId": 43
+                            },
+                            {
+                                "time": 871,
+                                "itemId": 38
+                            },
+                            {
+                                "time": 922,
+                                "itemId": 29
+                            },
+                            {
+                                "time": 923,
+                                "itemId": 188
+                            },
+                            {
+                                "time": 1010,
+                                "itemId": 42
+                            },
+                            {
+                                "time": 1011,
+                                "itemId": 43
+                            },
+                            {
+                                "time": 1122,
+                                "itemId": 43
+                            },
+                            {
+                                "time": 1126,
+                                "itemId": 42
+                            },
+                            {
+                                "time": 1127,
+                                "itemId": 43
+                            },
+                            {
+                                "time": 1218,
+                                "itemId": 43
+                            },
+                            {
+                                "time": 1219,
+                                "itemId": 188
+                            },
+                            {
+                                "time": 1261,
+                                "itemId": 21
+                            },
+                            {
+                                "time": 1368,
+                                "itemId": 23
+                            },
+                            {
+                                "time": 1435,
+                                "itemId": 22
+                            },
+                            {
+                                "time": 1470,
+                                "itemId": 4205
+                            },
+                            {
+                                "time": 1570,
+                                "itemId": 42
+                            },
+                            {
+                                "time": 1570,
+                                "itemId": 43
+                            },
+                            {
+                                "time": 1665,
+                                "itemId": 60
+                            },
+                            {
+                                "time": 1665,
+                                "itemId": 108
+                            },
+                            {
+                                "time": 1694,
+                                "itemId": 42
+                            },
+                            {
+                                "time": 1697,
+                                "itemId": 188
+                            },
+                            {
+                                "time": 1856,
+                                "itemId": 42
+                            },
+                            {
+                                "time": 1856,
+                                "itemId": 43
+                            },
+                            {
+                                "time": 1857,
+                                "itemId": 43
+                            },
+                            {
+                                "time": 1857,
+                                "itemId": 38
+                            },
+                            {
+                                "time": 1933,
+                                "itemId": 609
+                            },
+                            {
+                                "time": 2031,
+                                "itemId": 42
+                            },
+                            {
+                                "time": 2031,
+                                "itemId": 43
+                            },
+                            {
+                                "time": 2031,
+                                "itemId": 43
+                            },
+                            {
+                                "time": 2032,
+                                "itemId": 188
+                            },
+                            {
+                                "time": 2142,
+                                "itemId": 215
+                            },
+                            {
+                                "time": 2145,
+                                "itemId": 42
+                            },
+                            {
+                                "time": 2145,
+                                "itemId": 43
+                            },
+                            {
+                                "time": 2146,
+                                "itemId": 43
+                            }
+                        ]
+                    }
+                },
+                {
+                    "isRadiant": false,
+                    "heroId": 30,
+                    "hero": {
+                        "shortName": "witch_doctor"
+                    },
+                    "position": "POSITION_5",
+                    "playbackData": {
+                        "purchaseEvents": [
+                            {
+                                "time": -73,
+                                "itemId": 44
+                            },
+                            {
+                                "time": -72,
+                                "itemId": 34
+                            },
+                            {
+                                "time": -69,
+                                "itemId": 1123
+                            },
+                            {
+                                "time": -67,
+                                "itemId": 42
+                            },
+                            {
+                                "time": -66,
+                                "itemId": 43
+                            },
+                            {
+                                "time": -46,
+                                "itemId": 16
+                            },
+                            {
+                                "time": 28,
+                                "itemId": 28
+                            },
+                            {
+                                "time": 66,
+                                "itemId": 216
+                            },
+                            {
+                                "time": 197,
+                                "itemId": 12
+                            },
+                            {
+                                "time": 255,
+                                "itemId": 593
+                            },
+                            {
+                                "time": 288,
+                                "itemId": 43
+                            },
+                            {
+                                "time": 288,
+                                "itemId": 43
+                            },
+                            {
+                                "time": 332,
+                                "itemId": 35
+                            },
+                            {
+                                "time": 332,
+                                "itemId": 36
+                            },
+                            {
+                                "time": 426,
+                                "itemId": 91
+                            },
+                            {
+                                "time": 485,
+                                "itemId": 28
+                            },
+                            {
+                                "time": 487,
+                                "itemId": 92
+                            },
+                            {
+                                "time": 547,
+                                "itemId": 87
+                            },
+                            {
+                                "time": 581,
+                                "itemId": 88
+                            },
+                            {
+                                "time": 620,
+                                "itemId": 42
+                            },
+                            {
+                                "time": 620,
+                                "itemId": 42
+                            },
+                            {
+                                "time": 620,
+                                "itemId": 43
+                            },
+                            {
+                                "time": 621,
+                                "itemId": 43
+                            },
+                            {
+                                "time": 635,
+                                "itemId": 188
+                            },
+                            {
+                                "time": 748,
+                                "itemId": 29
+                            },
+                            {
+                                "time": 771,
+                                "itemId": 179
+                            },
+                            {
+                                "time": 807,
+                                "itemId": 180
+                            },
+                            {
+                                "time": 846,
+                                "itemId": 42
+                            },
+                            {
+                                "time": 846,
+                                "itemId": 42
+                            },
+                            {
+                                "time": 846,
+                                "itemId": 43
+                            },
+                            {
+                                "time": 918,
+                                "itemId": 42
+                            },
+                            {
+                                "time": 918,
+                                "itemId": 42
+                            },
+                            {
+                                "time": 918,
+                                "itemId": 43
+                            },
+                            {
+                                "time": 1024,
+                                "itemId": 60
+                            },
+                            {
+                                "time": 1199,
+                                "itemId": 42
+                            },
+                            {
+                                "time": 1200,
+                                "itemId": 43
+                            },
+                            {
+                                "time": 1200,
+                                "itemId": 188
+                            },
+                            {
+                                "time": 1308,
+                                "itemId": 43
+                            },
+                            {
+                                "time": 1392,
+                                "itemId": 23
+                            },
+                            {
+                                "time": 1392,
+                                "itemId": 21
+                            },
+                            {
+                                "time": 1392,
+                                "itemId": 22
+                            },
+                            {
+                                "time": 1395,
+                                "itemId": 108
+                            },
+                            {
+                                "time": 1557,
+                                "itemId": 42
+                            },
+                            {
+                                "time": 1557,
+                                "itemId": 42
+                            },
+                            {
+                                "time": 1557,
+                                "itemId": 43
+                            },
+                            {
+                                "time": 1558,
+                                "itemId": 43
+                            },
+                            {
+                                "time": 1558,
+                                "itemId": 188
+                            },
+                            {
+                                "time": 1622,
+                                "itemId": 1
+                            },
+                            {
+                                "time": 1858,
+                                "itemId": 266
+                            },
+                            {
+                                "time": 1888,
+                                "itemId": 61
+                            },
+                            {
+                                "time": 1905,
+                                "itemId": 267
+                            },
+                            {
+                                "time": 1922,
+                                "itemId": 42
+                            },
+                            {
+                                "time": 1922,
+                                "itemId": 42
+                            },
+                            {
+                                "time": 1923,
+                                "itemId": 43
+                            },
+                            {
+                                "time": 1923,
+                                "itemId": 43
+                            },
+                            {
+                                "time": 2157,
+                                "itemId": 42
+                            },
+                            {
+                                "time": 2157,
+                                "itemId": 43
+                            },
+                            {
+                                "time": 2158,
+                                "itemId": 42
+                            }
+                        ]
+                    }
+                },
+                {
+                    "isRadiant": false,
+                    "heroId": 82,
+                    "hero": {
+                        "shortName": "meepo"
+                    },
+                    "position": "POSITION_2",
+                    "playbackData": {
+                        "purchaseEvents": [
+                            {
+                                "time": -89,
+                                "itemId": 16
+                            },
+                            {
+                                "time": -89,
+                                "itemId": 42
+                            },
+                            {
+                                "time": -84,
+                                "itemId": 18
+                            },
+                            {
+                                "time": 64,
+                                "itemId": 44
+                            },
+                            {
+                                "time": 180,
+                                "itemId": 240
+                            },
+                            {
+                                "time": 245,
+                                "itemId": 1575
+                            },
+                            {
+                                "time": 272,
+                                "itemId": 569
+                            },
+                            {
+                                "time": 364,
+                                "itemId": 29
+                            },
+                            {
+                                "time": 420,
+                                "itemId": 25
+                            },
+                            {
+                                "time": 511,
+                                "itemId": 18
+                            },
+                            {
+                                "time": 532,
+                                "itemId": 63
+                            },
+                            {
+                                "time": 633,
+                                "itemId": 22
+                            },
+                            {
+                                "time": 671,
+                                "itemId": 19
+                            },
+                            {
+                                "time": 747,
+                                "itemId": 173
+                            },
+                            {
+                                "time": 773,
+                                "itemId": 174
+                            },
+                            {
+                                "time": 950,
+                                "itemId": 1
+                            },
+                            {
+                                "time": 1023,
+                                "itemId": 21
+                            },
+                            {
+                                "time": 1026,
+                                "itemId": 46
+                            },
+                            {
+                                "time": 1026,
+                                "itemId": 46
+                            },
+                            {
+                                "time": 1118,
+                                "itemId": 23
+                            },
+                            {
+                                "time": 1160,
+                                "itemId": 60
+                            },
+                            {
+                                "time": 1204,
+                                "itemId": 22
+                            },
+                            {
+                                "time": 1226,
+                                "itemId": 108
+                            },
+                            {
+                                "time": 1606,
+                                "itemId": 1096
+                            },
+                            {
+                                "time": 1656,
+                                "itemId": 52
+                            },
+                            {
+                                "time": 1668,
+                                "itemId": 1097
+                            },
+                            {
+                                "time": 2068,
+                                "itemId": 60
+                            },
+                            {
+                                "time": 2069,
+                                "itemId": 24
+                            },
+                            {
+                                "time": 2069,
+                                "itemId": 159
+                            },
+                            {
+                                "time": 2069,
+                                "itemId": 1575
+                            },
+                            {
+                                "time": 2131,
+                                "itemId": 160
+                            },
+                            {
+                                "time": 2191,
+                                "itemId": 607
+                            },
+                            {
+                                "time": 2288,
+                                "itemId": 52
+                            },
+                            {
+                                "time": 2308,
+                                "itemId": 603
+                            }
+                        ]
+                    }
+                },
+                {
+                    "isRadiant": false,
+                    "heroId": 60,
+                    "hero": {
+                        "shortName": "night_stalker"
+                    },
+                    "position": "POSITION_3",
+                    "playbackData": {
+                        "purchaseEvents": [
+                            {
+                                "time": -89,
+                                "itemId": 11
+                            },
+                            {
+                                "time": -89,
+                                "itemId": 13
+                            },
+                            {
+                                "time": -89,
+                                "itemId": 44
+                            },
+                            {
+                                "time": -89,
+                                "itemId": 16
+                            },
+                            {
+                                "time": -89,
+                                "itemId": 20
+                            },
+                            {
+                                "time": 137,
+                                "itemId": 34
+                            },
+                            {
+                                "time": 137,
+                                "itemId": 35
+                            },
+                            {
+                                "time": 137,
+                                "itemId": 72
+                            },
+                            {
+                                "time": 184,
+                                "itemId": 29
+                            },
+                            {
+                                "time": 185,
+                                "itemId": 38
+                            },
+                            {
+                                "time": 218,
+                                "itemId": 36
+                            },
+                            {
+                                "time": 218,
+                                "itemId": 73
+                            },
+                            {
+                                "time": 308,
+                                "itemId": 4
+                            },
+                            {
+                                "time": 361,
+                                "itemId": 216
+                            },
+                            {
+                                "time": 426,
+                                "itemId": 2
+                            },
+                            {
+                                "time": 565,
+                                "itemId": 57
+                            },
+                            {
+                                "time": 567,
+                                "itemId": 216
+                            },
+                            {
+                                "time": 602,
+                                "itemId": 50
+                            },
+                            {
+                                "time": 745,
+                                "itemId": 21
+                            },
+                            {
+                                "time": 745,
+                                "itemId": 3
+                            },
+                            {
+                                "time": 886,
+                                "itemId": 20
+                            },
+                            {
+                                "time": 886,
+                                "itemId": 13
+                            },
+                            {
+                                "time": 886,
+                                "itemId": 72
+                            },
+                            {
+                                "time": 904,
+                                "itemId": 3
+                            },
+                            {
+                                "time": 939,
+                                "itemId": 252
+                            },
+                            {
+                                "time": 1076,
+                                "itemId": 1
+                            },
+                            {
+                                "time": 1157,
+                                "itemId": 46
+                            },
+                            {
+                                "time": 1158,
+                                "itemId": 46
+                            },
+                            {
+                                "time": 1241,
+                                "itemId": 1122
+                            },
+                            {
+                                "time": 1241,
+                                "itemId": 1101
+                            },
+                            {
+                                "time": 1265,
+                                "itemId": 939
+                            },
+                            {
+                                "time": 1286,
+                                "itemId": 46
+                            },
+                            {
+                                "time": 1286,
+                                "itemId": 46
+                            },
+                            {
+                                "time": 1545,
+                                "itemId": 609
+                            },
+                            {
+                                "time": 1778,
+                                "itemId": 55
+                            },
+                            {
+                                "time": 2030,
+                                "itemId": 9
+                            },
+                            {
+                                "time": 2032,
+                                "itemId": 12
+                            },
+                            {
+                                "time": 2032,
+                                "itemId": 85
+                            },
+                            {
+                                "time": 2032,
+                                "itemId": 86
+                            },
+                            {
+                                "time": 2065,
+                                "itemId": 111
+                            },
+                            {
+                                "time": 2067,
+                                "itemId": 39
+                            },
+                            {
+                                "time": 2083,
+                                "itemId": 112
+                            }
+                        ]
+                    }
+                },
+                {
+                    "isRadiant": false,
+                    "heroId": 94,
+                    "hero": {
+                        "shortName": "medusa"
+                    },
+                    "position": "POSITION_1",
+                    "playbackData": {
+                        "purchaseEvents": [
+                            {
+                                "time": -89,
+                                "itemId": 34
+                            },
+                            {
+                                "time": -89,
+                                "itemId": 16
+                            },
+                            {
+                                "time": -89,
+                                "itemId": 35
+                            },
+                            {
+                                "time": -89,
+                                "itemId": 11
+                            },
+                            {
+                                "time": 81,
+                                "itemId": 1575
+                            },
+                            {
+                                "time": 330,
+                                "itemId": 22
+                            },
+                            {
+                                "time": 332,
+                                "itemId": 38
+                            },
+                            {
+                                "time": 382,
+                                "itemId": 17
+                            },
+                            {
+                                "time": 456,
+                                "itemId": 234
+                            },
+                            {
+                                "time": 459,
+                                "itemId": 38
+                            },
+                            {
+                                "time": 460,
+                                "itemId": 38
+                            },
+                            {
+                                "time": 506,
+                                "itemId": 236
+                            },
+                            {
+                                "time": 587,
+                                "itemId": 46
+                            },
+                            {
+                                "time": 665,
+                                "itemId": 22
+                            },
+                            {
+                                "time": 668,
+                                "itemId": 38
+                            },
+                            {
+                                "time": 669,
+                                "itemId": 216
+                            },
+                            {
+                                "time": 760,
+                                "itemId": 18
+                            },
+                            {
+                                "time": 850,
+                                "itemId": 169
+                            },
+                            {
+                                "time": 882,
+                                "itemId": 170
+                            },
+                            {
+                                "time": 928,
+                                "itemId": 1122
+                            },
+                            {
+                                "time": 1058,
+                                "itemId": 146
+                            },
+                            {
+                                "time": 1069,
+                                "itemId": 147
+                            },
+                            {
+                                "time": 1127,
+                                "itemId": 46
+                            },
+                            {
+                                "time": 1127,
+                                "itemId": 46
+                            },
+                            {
+                                "time": 1128,
+                                "itemId": 216
+                            },
+                            {
+                                "time": 1187,
+                                "itemId": 38
+                            },
+                            {
+                                "time": 1188,
+                                "itemId": 38
+                            },
+                            {
+                                "time": 1369,
+                                "itemId": 24
+                            },
+                            {
+                                "time": 1543,
+                                "itemId": 159
+                            },
+                            {
+                                "time": 1574,
+                                "itemId": 60
+                            },
+                            {
+                                "time": 1577,
+                                "itemId": 160
+                            },
+                            {
+                                "time": 1694,
+                                "itemId": 5
+                            },
+                            {
+                                "time": 1695,
+                                "itemId": 2
+                            },
+                            {
+                                "time": 1719,
+                                "itemId": 148
+                            },
+                            {
+                                "time": 1719,
+                                "itemId": 149
+                            },
+                            {
+                                "time": 1769,
+                                "itemId": 140
+                            },
+                            {
+                                "time": 1872,
+                                "itemId": 46
+                            },
+                            {
+                                "time": 1873,
+                                "itemId": 46
+                            },
+                            {
+                                "time": 1948,
+                                "itemId": 51
+                            },
+                            {
+                                "time": 1951,
+                                "itemId": 141
+                            },
+                            {
+                                "time": 1991,
+                                "itemId": 216
+                            },
+                            {
+                                "time": 1992,
+                                "itemId": 216
+                            },
+                            {
+                                "time": 2181,
+                                "itemId": 23
+                            },
+                            {
+                                "time": 2181,
+                                "itemId": 21
+                            },
+                            {
+                                "time": 2181,
+                                "itemId": 22
+                            },
+                            {
+                                "time": 2264,
+                                "itemId": 60
+                            },
+                            {
+                                "time": 2264,
+                                "itemId": 108
+                            }
+                        ]
+                    }
+                },
+                {
+                    "isRadiant": false,
+                    "heroId": 75,
+                    "hero": {
+                        "shortName": "silencer"
+                    },
+                    "position": "POSITION_4",
+                    "playbackData": {
+                        "purchaseEvents": [
+                            {
+                                "time": -89,
+                                "itemId": 16
+                            },
+                            {
+                                "time": -25,
+                                "itemId": 237
+                            },
+                            {
+                                "time": -24,
+                                "itemId": 44
+                            },
+                            {
+                                "time": -24,
+                                "itemId": 16
+                            },
+                            {
+                                "time": -23,
+                                "itemId": 1123
+                            },
+                            {
+                                "time": -23,
+                                "itemId": 20
+                            },
+                            {
+                                "time": -22,
+                                "itemId": 20
+                            },
+                            {
+                                "time": 182,
+                                "itemId": 25
+                            },
+                            {
+                                "time": 194,
+                                "itemId": 42
+                            },
+                            {
+                                "time": 328,
+                                "itemId": 43
+                            },
+                            {
+                                "time": 466,
+                                "itemId": 29
+                            },
+                            {
+                                "time": 610,
+                                "itemId": 19
+                            },
+                            {
+                                "time": 634,
+                                "itemId": 63
+                            },
+                            {
+                                "time": 785,
+                                "itemId": 14
+                            },
+                            {
+                                "time": 785,
+                                "itemId": 74
+                            },
+                            {
+                                "time": 826,
+                                "itemId": 75
+                            },
+                            {
+                                "time": 832,
+                                "itemId": 74
+                            },
+                            {
+                                "time": 832,
+                                "itemId": 75
+                            },
+                            {
+                                "time": 958,
+                                "itemId": 43
+                            },
+                            {
+                                "time": 959,
+                                "itemId": 43
+                            },
+                            {
+                                "time": 1008,
+                                "itemId": 22
+                            },
+                            {
+                                "time": 1010,
+                                "itemId": 23
+                            },
+                            {
+                                "time": 1072,
+                                "itemId": 17
+                            },
+                            {
+                                "time": 1076,
+                                "itemId": 593
+                            },
+                            {
+                                "time": 1216,
+                                "itemId": 101
+                            },
+                            {
+                                "time": 1276,
+                                "itemId": 102
+                            },
+                            {
+                                "time": 1290,
+                                "itemId": 43
+                            },
+                            {
+                                "time": 1290,
+                                "itemId": 42
+                            },
+                            {
+                                "time": 1367,
+                                "itemId": 609
+                            },
+                            {
+                                "time": 1410,
+                                "itemId": 244
+                            },
+                            {
+                                "time": 1626,
+                                "itemId": 22
+                            },
+                            {
+                                "time": 1626,
+                                "itemId": 17
+                            },
+                            {
+                                "time": 1729,
+                                "itemId": 234
+                            },
+                            {
+                                "time": 1748,
+                                "itemId": 262
+                            },
+                            {
+                                "time": 1772,
+                                "itemId": 236
+                            },
+                            {
+                                "time": 1772,
+                                "itemId": 263
+                            },
+                            {
+                                "time": 1977,
+                                "itemId": 37
+                            },
+                            {
+                                "time": 2058,
+                                "itemId": 188
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    }
+}

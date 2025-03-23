@@ -21,108 +21,26 @@ headers = {
 
 # GraphQL-запрос
 query = """
-{
-  match(id: 8193325864) {
-    id
-    didRadiantWin # Кто победил
-    durationSeconds # Продолжительность
-    towerStatusRadiant # Оставшиеся тавера
-    towerStatusDire # Оставшиеся тавера
-    barracksStatusRadiant # Оставшиеся бараки
-    barracksStatusDire  # Оставшиеся бараки
-    lobbyType
-    gameMode
-    isStats # Можно ли получить статистику
-    actualRank # Ранг
-    averageRank # Ранг
-    averageImp # Импакт
-    gameVersionId
-    regionId
-    rank  # Ранг
-    analysisOutcome # Вариант исхода матча
-    predictedOutcomeWeight # Уверенность модели в предсказании
-    players {
+query{
+  match(id: 8193325864){
+    didRadiantWin
+    durationSeconds
+    radiantKills
+    direKills
+    players{
+      isRadiant
       heroId
-      playerSlot
-      kills
-      deaths
-      assists
-      goldPerMinute
-      experiencePerMinute
-      networth
-      heroDamage
-      towerDamage
-      heroHealing
+      hero{
+        shortName
+      }
       position
-      role
-      streakPrediction
-      imp
-      award
-      behavior
-      stats{
-     	  itemPurchases{
-          itemId
+      playbackData{
+        purchaseEvents{
           time
-        }
-        inventoryReport{
-          item0{
-            itemId
-          }
-          item1{
-            itemId
-          }
-          item2{
-            itemId
-          }
-          item3{
-            itemId
-          }
-          item4{
-            itemId
-          }
-          item5{
-            itemId
-          }
-          backPack0{
-            itemId
-          }
-          backPack1{
-            itemId
-          }
-          backPack2{
-            itemId
-          }
-          neutral0{
-            itemId
-          }
+          itemId
         }
       }
-      item0Id
-      item1Id
-      item2Id
-      item3Id
-      item4Id
-      item5Id
-      backpack0Id
-      backpack1Id
-      backpack2Id
-      neutral0Id
     }
-    radiantNetworthLeads # Приемущество Radiant
-    radiantExperienceLeads # Приемущество Radiant
-    radiantKills # Килы на каждую минуту
-    direKills  # Килы на каждую минуту
-    pickBans {
-      isPick
-      heroId
-      order
-    }
-    winRates # вероятность победы Radiant per minut
-    predictedWinRates # вероятность победы Radiant per minut
-    bottomLaneOutcome # исход лайна
-    midLaneOutcome # исход лайна
-    topLaneOutcome # исход лайна
-    didRequestDownload
   }
 }
 """
