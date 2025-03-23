@@ -4,7 +4,7 @@ path_to_data = 'match_data.json'
 
 # Загрузка JSON
 with open(path_to_data, 'r') as f:
-    data = json.load(f)  # Используйте json.load для файлов
+    data = json.load(f)
 
 class MatchParser:
     def __init__(self, json_data):
@@ -26,13 +26,13 @@ class MatchParser:
             "POSITION_4": 4,
             "POSITION_5": 5
         }
-        self.hero_items = {}  # Словарь для хранения группированных предметов по героям
+        self.hero_items = {}  # Словарь для хранения предметов по героям
 
     def process_players(self):
         """
         Разделение игроков на команды Radiant и Dire.
         """
-        # Создаем списки героев и сразу сортируем их по позициям
+        # Создаем списки героев и сортируем их по позициям
         self.radiant_heroes = sorted(
             [
                 {"shortName": player["hero"]["shortName"], "position": player["position"], "heroId": player["heroId"]}
@@ -120,12 +120,12 @@ class MatchParser:
         """
         return self.hero_items
 
-# Создание экземпляра класса
+
 parser = MatchParser(data)
 parser.process_players()
 parser.group_items_by_time()
 
-# Пример использования
+
 match_data = parser.get_match_data()
 print("Match Data:", match_data)
 
