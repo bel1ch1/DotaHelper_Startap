@@ -2,7 +2,7 @@ import json
 
 
 # Загрузка JSON
-path_to_data = 'match_data.json'
+path_to_data = 'match_8227173818_data.json'
 with open(path_to_data, 'r') as f:
     data = json.load(f)
 
@@ -55,19 +55,14 @@ class MatchParser:
 
 
     def group_items_by_time(self):
-        """
-        Группирует предметы по временным интервалам для каждого героя.
-        Предметы из предыдущих групп добавляются в последующие.
-        """
-        # Временные интервалы (в секундах)
         time_intervals = [
-            (-300, 360),            # Группа 0
-            (360, 900),             # Группа 1
-            (900, 1500),            # Группа 2
-            (1500, 2100),           # Группа 3
-            (2100, 2700),           # Группа 4
-            (2700, 3600),           # Группа 5
-            (3600, float('inf'))    # Группа 6
+            (-300, 360),   # Группа 0
+            (360, 900),    # Группа 1
+            (900, 1500),    # Группа 2
+            (1500, 2100),   # Группа 3
+            (2100, 2700),   # Группа 4
+            (2700, 3600),   # Группа 5
+            (3600, float('inf'))  # Группа 6
         ]
 
         for player in self.players:
@@ -75,21 +70,36 @@ class MatchParser:
             playback_data = player.get("playbackData", {})
             purchase_events = playback_data.get("purchaseEvents", [])
 
-            # Инициализация списков для каждого временного интервала, если они еще не созданы
             if short_name not in self.hero_items:
-                self.hero_items[short_name] = {f"group_{i}": [] for i in range(len(time_intervals))}
+                # Инициализируем все группы как None
+                self.hero_items[short_name] = {f"group_{i}": None for i in range(len(time_intervals))}
 
             for event in purchase_events:
                 time = event.get("time", 0)
                 item_id = event.get("itemId", "unknown")
 
-                # Определяем, в какую группу попадает предмет
                 for i, (start, end) in enumerate(time_intervals):
                     if start <= time < end:
+                        # Если группа еще не инициализирована, создаем пустой список
+                        if self.hero_items[short_name][f"group_{i}"] is None:
+                            self.hero_items[short_name][f"group_{i}"] = []
+                        
                         # Добавляем предмет в текущую и все последующие группы
                         for j in range(i, len(time_intervals)):
+                            if end > self.durationSeconds:
+                                # Если временной интервал выходит за пределы матча, пропускаем
+                                continue
+                            if self.hero_items[short_name][f"group_{j}"] is None:
+                                self.hero_items[short_name][f"group_{j}"] = []
                             self.hero_items[short_name][f"group_{j}"].append(item_id)
                         break
+
+        # Помечаем группы, выходящие за пределы матча, как None
+        for hero in self.hero_items.values():
+            for i in range(len(time_intervals)):
+                start, end = time_intervals[i]
+                if start >= self.durationSeconds:
+                    hero[f"group_{i}"] = None
 
 
     def get_match_data(self):
