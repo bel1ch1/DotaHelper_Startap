@@ -125,17 +125,17 @@ parser = NewMatchParser(new_data)
 parser.print_all_heroes()
 
 # Запрашиваем ID героя пользователя
-try:
-    hero_id = int(input("\nВведите ID героя пользователя: "))
 
-    # Получение предметов игрока
-    player_items = parser.get_player_items(hero_id)
-    print("\nПредметы игрока по этапам:")
-    for group, items in player_items.items():
-        print(f"{group}: {items}")
+hero_id = int(input("\nВведите ID героя пользователя: "))
 
-    # Получение отфильтрованных предметов противников
-    enemy_items = parser.get_filtered_enemy_items(hero_id)
-    print("\nОтфильтрованные предметы противников по этапам:")
-    for group, items in enemy_items.items():
-        print(f"{group}: {items}")
+# Получение предметов игрока
+player_items = parser.get_player_items(hero_id)
+print("\nПредметы игрока по этапам:")
+for group, items in player_items.items():
+    print(f"{group}: {items}")
+
+# Получение отфильтрованных предметов противников
+enemy_items = parser.get_filtered_enemy_items(hero_id)
+print("\nОтфильтрованные предметы противников по этапам:")
+for group, items in enemy_items.items():
+    print(f"{group}: {items}")
