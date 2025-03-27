@@ -184,12 +184,26 @@ class NewMatchParser:
             print(f"ID: {hero_id}, Имя: {data['hero_name']}, Команда: {'Radiant' if data['isRadiant'] else 'Dire'}")
 
 
-    def get_kills_advantage_per_stage(self, radiant, dire):
+    def get_kills_advantage_per_stage(self, hero_id):
         """
-        Returns the vector of advantages for each stage if it has reached it
+        Returns kill advantage for each stage relative to player's team
+
+        Args:
+            hero_id (int): ID of the player's hero
+
+        Returns:
+            list: Kill advantage per stage where:
+                positive values = player's team advantage
+                negative values = enemy team advantage
+                None if hero not found
         """
+        if hero_id not in self.hero_items:
+            return None
+
         result = []
-        n = len(radiant)
+        player_is_radiant = self.hero_items[hero_id]['isRadiant']
+        n = min(len(self.radiantKills), len(self.direKills))
+
         group_0 = []
         group_1 = []
         group_2 = []
@@ -197,54 +211,70 @@ class NewMatchParser:
         group_4 = []
         group_5 = []
         group_6 = []
-        for i in range(n-1):
-            res = radiant[i] - dire[i]
+
+        for i in range(n):
+            # Calculate advantage from player's team perspective
+            if player_is_radiant:
+                advantage = self.radiantKills[i] - self.direKills[i]
+            else:
+                advantage = self.direKills[i] - self.radiantKills[i]
+
+            # Group by time intervals
             if i <= 5:
-                group_0.append(res)
-            elif i >= 6 and i <= 15:
-                group_1.append(res)
-            elif i >= 16 and i <= 25:
-                group_2.append(res)
-            elif i >= 26 and i <= 35:
-                group_3.append(res)
-            elif i >= 36 and i <= 45:
-                group_4.append(res)
-            elif i >= 46 and i <= 60:
-                group_5.append(res)
+                group_0.append(advantage)
+            elif 6 <= i <= 15:
+                group_1.append(advantage)
+            elif 16 <= i <= 25:
+                group_2.append(advantage)
+            elif 26 <= i <= 35:
+                group_3.append(advantage)
+            elif 36 <= i <= 45:
+                group_4.append(advantage)
+            elif 46 <= i <= 60:
+                group_5.append(advantage)
             elif i > 60:
-                group_6.append(res)
+                group_6.append(advantage)
+
+        # Calculate average advantage per stage
         if group_0:
-          result.append(sum(group_0))
+            result.append(sum(group_0)/len(group_0))
         if group_1:
-          result.append(sum(group_1))
+            result.append(sum(group_1)/len(group_1))
         if group_2:
-          result.append(sum(group_2))
+            result.append(sum(group_2)/len(group_2))
         if group_3:
-          result.append(sum(group_3))
+            result.append(sum(group_3)/len(group_3))
         if group_4:
-          result.append(sum(group_4))
+            result.append(sum(group_4)/len(group_4))
         if group_5:
-          result.append(sum(group_5))
+            result.append(sum(group_5)/len(group_5))
         if group_6:
-          result.append(sum(group_6))
+            result.append(sum(group_6)/len(group_6))
+
         self.advantage = result
         return result
 
 
-    def stage_winner(self, result):
+    def stage_winner(self, hero_id):
         """
-        Returns the winner for each stage.
+        Determine stage winners from player's perspective
 
-        Radiant: 1
-        Dire: 0
+        Args:
+            hero_id (int): ID of the player's hero
+
+        Returns:
+            list: 1 if player's team won the stage
+                0 if enemy team won the stage
+                None if hero not found
         """
-        stage_winner = []
-        for i in range(len(result)):
-            if result[i] >= 0:
-                stage_winner.append(1)
-            else:
-                stage_winner.append(0)
-        return stage_winner
+        if hero_id not in self.hero_items:
+            return None
+
+        advantage = self.get_kills_advantage_per_stage(hero_id)
+        if advantage is None:
+            return None
+
+        return [1 if adv >= 0 else 0 for adv in advantage]
 
 
 
@@ -266,11 +296,11 @@ print(f"\nПобедитель матча: {winner}")
 result = parser.get_player_result(hero_id)
 print(f"\nUser victory status: {result}")
 
-kills_advantage = parser.get_kills_advantage_per_stage(parser.radiantKills, parser.direKills)
-print("Kills Advantage:", kills_advantage)
+kills_advantage = parser.get_kills_advantage_per_stage(hero_id)
+print(f"\nKill Advantage (player perspective): {kills_advantage}")
 
-st_winner = parser.stage_winner(parser.advantage)
-print(f'Stage Winner: {st_winner}')
+stage_winners = parser.stage_winner(hero_id)
+print(f"Stage Winners (player perspective): {stage_winners}")
 
 enemy_ids = parser.get_enemy_team_ids(hero_id)
 print(f"\nID героев противников: {enemy_ids}")
