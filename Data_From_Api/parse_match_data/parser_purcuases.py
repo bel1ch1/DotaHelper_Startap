@@ -202,13 +202,16 @@ class MatchParser:
 
         return hero_items
 
-    def get_enemy_items(self, hero_id):
+    def get_enemy_items_combined(self, hero_id):
         """
-        Возвращает все предметы противников указанного героя (по heroId)
-        для всех стадий, где они не None
-        Формат: {hero_name: {group_0: [item1, ...], ...}, ...}
+        Возвращает предметы всех противников объединенные в массивы по этапам
+        Формат: {
+            'group_0': [item1, item2, ...],  # Все предметы противников на этапе 0
+            'group_1': [item3, item4, ...],  # Все предметы противников на этапе 1
+            ...
+        }
         """
-        enemy_items = {}
+        enemy_items_combined = {}
 
         # Определяем команду героя
         is_radiant = None
@@ -220,20 +223,28 @@ class MatchParser:
         if is_radiant is None:
             return {}
 
+        # Инициализируем группы
+        for i in range(7):  # group_0 до group_6
+            enemy_items_combined[f'group_{i}'] = []
+
         # Собираем предметы всех противников
         for player in self.players:
             if player.get('isRadiant', False) != is_radiant:  # Игрок из противоположной команды
                 hero_name = player.get('hero', {}).get('shortName')
-                hero_data = {}
+                hero_items = self.hero_items.get(hero_name, {})
 
-                for group, items in self.hero_items.get(hero_name, {}).items():
+                for group, items in hero_items.items():
                     if items is not None:
-                        hero_data[group] = items
+                        enemy_items_combined[group].extend(items)
 
-                if hero_data:  # Добавляем только если есть предметы
-                    enemy_items[hero_name] = hero_data
+        # Удаляем пустые группы (где противники не имели предметов)
+        enemy_items_combined = {
+            group: items
+            for group, items in enemy_items_combined.items()
+            if items  # Оставляем только непустые списки
+        }
 
-        return enemy_items
+        return enemy_items_combined
 
 
 parser = MatchParser(data)
@@ -242,16 +253,24 @@ parser.group_items_by_time()
 
 match_data = parser.get_match_data()
 print("Match Data:", match_data)
+print('\n')
 
 radiant_heroes, dire_heroes = parser.get_sorted_heroes()
 print("Radiant Heroes:", radiant_heroes)
 print("Dire Heroes:", dire_heroes)
+print('\n')
 
 kills_advantage = parser.get_kills_advantage_per_stage(parser.radiantKills, parser.direKills)
 print("Kills Advantage:", kills_advantage)
+print('\n')
 
 hero_items = parser.get_hero_items()
 player_items = parser.get_player_items(82)
 print("Player items:", player_items)
-enemy_items = parser.get_enemy_items(82)
-print("Enemy items:", enemy_items)
+print('\n')
+
+enemy_items = parser.get_enemy_items_combined(82)
+print("Enemy items per stage:")
+for group, items in enemy_items.items():
+    print(f"{group}: {items}")
+    print('\n')
