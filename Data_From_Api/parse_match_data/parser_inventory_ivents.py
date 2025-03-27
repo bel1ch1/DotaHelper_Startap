@@ -139,8 +139,3 @@ try:
     print("\nОтфильтрованные предметы противников по этапам:")
     for group, items in enemy_items.items():
         print(f"{group}: {items}")
-
-except ValueError:
-    print("Ошибка: введите числовой ID героя")
-except Exception as e:
-    print(f"Произошла ошибка: {e}")
