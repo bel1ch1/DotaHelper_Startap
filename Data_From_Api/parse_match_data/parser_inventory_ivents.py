@@ -182,12 +182,15 @@ class NewMatchParser:
 
         player_team = self.hero_items[hero_id]['isRadiant']
         enemy_ids = []
-
+        user_team_ids = []
         for p_id, data in self.hero_items.items():
             if data['isRadiant'] != player_team:  # Это противник
                 enemy_ids.append(p_id)
+            else:
+                if p_id != hero_id:
+                    user_team_ids.append(p_id)
 
-        return enemy_ids
+        return enemy_ids, user_team_ids
 
 
     def print_all_heroes(self):
@@ -315,8 +318,9 @@ print(f"\nKill Advantage (player perspective): {kills_advantage}")
 stage_winners = parser.stage_winner(hero_id)
 print(f"Stage Winners (player perspective): {stage_winners}")
 
-enemy_ids = parser.get_enemy_team_ids(hero_id)
+enemy_ids, user_team_ids = parser.get_enemy_team_ids(hero_id)
 print(f"\nID героев противников: {enemy_ids}")
+print(f"\nID героев союзников: {user_team_ids}")
 
 # user items
 player_items = parser.get_player_items(hero_id)
