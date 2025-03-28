@@ -291,7 +291,7 @@ class NewMatchParser:
 
 
 
-path_to_json = 'match_data_v3.json'
+path_to_json = 'C:/work/DotaHelper_Startap/Data/not_dataset/match_data_v3.json'
 with open(path_to_json, 'r') as f:
     new_data = json.load(f)
 
@@ -325,9 +325,9 @@ for group, items in player_items.items():
     print(f"{group}: {items}")
 
 # enemy items
-player_items = parser.get_player_items(hero_id)
-print("Player items by stage (IDs only):")
-for group, items in player_items.items():
+enemy_items = parser.get_filtered_enemy_items(hero_id)
+print("\nОтфильтрованные предметы противников по этапам:")
+for group, items in enemy_items.items():
     print(f"{group}: {items}")
 
 
