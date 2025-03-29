@@ -293,186 +293,214 @@ class NewMatchParser:
         return [1 if adv >= 0 else 0 for adv in advantage]
 
 
+class MatchStatsAnalyzer:
+    def __init__(self, match_parser, vs_file_path, with_file_path, win_rate_file_path):
+        """
+        Инициализирует анализатор статистики матча
 
-path_to_json = 'C:/work/DotaHelper_Startap/Data/not_dataset/match_data_v3.json'
-with open(path_to_json, 'r') as f:
-    new_data = json.load(f)
+        Args:
+            match_parser (NewMatchParser): экземпляр парсера матча
+            vs_file_path (str): путь к файлу с винрейтами против врагов
+            with_file_path (str): путь к файлу с винрейтами с союзниками
+            win_rate_file_path (str): путь к файлу с общей статистикой героев
+        """
+        self.parser = match_parser
+        self.vs_data = self._load_json_file(vs_file_path)
+        self.with_data = self._load_json_file(with_file_path)
+        self.win_rate_data = self._load_json_file(win_rate_file_path)
+
+    def _load_json_file(self, file_path):
+        """Загружает JSON файл"""
+        with open(file_path, 'r') as f:
+            return json.load(f)
 
 
-parser = NewMatchParser(new_data)
+    def _find_hero_matchup(self, hero_id, hero_id2, matchup_data, matchup_type='vs'):
+        """
+        Ищет винрейт героя против другого героя или с союзником
 
-# Printing all heroes
-parser.print_all_heroes()
+        Args:
+            hero_id (int): ID основного героя
+            hero_id2 (int): ID героя противника/союзника
+            matchup_data (dict): данные о матчапах
+            matchup_type (str): 'vs' для противников, 'with' для союзников
 
-hero_id = 82 #int(input("\nВведите ID героя пользователя: "))
+        Returns:
+            float: винрейт или 0.5 если данные не найдены
+        """
+        hero_stats = matchup_data.get('data', {}).get('heroStats', {})
+        matchups = hero_stats.get('matchUp', [])
 
-winner = parser.get_winner()
-print(f"\nПобедитель матча: {winner}")
+        for matchup in matchups:
+            if matchup.get('heroId') == hero_id:
+                relations = matchup.get(matchup_type, [])
+                for rel in relations:
+                    if rel.get('heroId2') == hero_id2:
+                        return rel.get('winsAverage', 0.5)
 
-result = parser.get_player_result(hero_id)
-print(f"\nUser victory status: {result}")
+        # Возвращаем 0.5 если данных нет (нейтральный винрейт)
+        return 0.5
 
-kills_advantage = parser.get_kills_advantage_per_stage(hero_id)
-print(f"\nKill Advantage (player perspective): {kills_advantage}")
 
-stage_winners = parser.stage_winner(hero_id)
-print(f"Stage Winners (player perspective): {stage_winners}")
+    def get_enemy_win_rates(self, hero_id):
+        """
+        Возвращает винрейты героя пользователя против каждого героя противника
 
+        Args:
+            hero_id (int): ID героя пользователя
+
+        Returns:
+            list: список из 5 винрейтов против героев противника
+        """
+        enemy_ids, _ = self.parser.get_enemy_team_ids(hero_id)
+        win_rates = []
+
+        for enemy_id in enemy_ids:
+            win_rate = self._find_hero_matchup(hero_id, enemy_id, self.vs_data, 'vs')
+            win_rates.append(win_rate)
+
+        return win_rates
+
+
+    def get_ally_win_rates(self, hero_id):
+        """
+        Возвращает винрейты героя пользователя с каждым героем союзника
+
+        Args:
+            hero_id (int): ID героя пользователя
+
+        Returns:
+            list: список из 4 винрейтов с героями союзников
+        """
+        _, ally_ids = self.parser.get_enemy_team_ids(hero_id)
+        win_rates = []
+
+        for ally_id in ally_ids:
+            win_rate = self._find_hero_matchup(hero_id, ally_id, self.with_data, 'with')
+            win_rates.append(win_rate)
+
+        return win_rates
+
+
+    def _get_hero_win_rate(self, hero_id):
+        """
+        Получает общий винрейт героя по его ID
+
+        Args:
+            hero_id (int): ID героя
+
+        Returns:
+            float: винрейт героя или 0.5 если данные не найдены
+        """
+        hero_stats = self.win_rate_data.get('data', {}).get('heroStats', {})
+        win_rates = hero_stats.get('winGameVersion', [])
+
+        for hero in win_rates:
+            if hero.get('heroId') == hero_id:
+                match_count = hero.get('matchCount', 1)
+                win_count = hero.get('winCount', 0)
+                return win_count / match_count if match_count > 0 else 0.5
+
+        return 0.5  # Возвращаем нейтральный винрейт если герой не найден
+
+
+    def calculate_team_win_rates(self, hero_id):
+        """
+        Вычисляет суммарные винрейты команд пользователя и противников
+
+        Args:
+            hero_id (int): ID героя пользователя
+
+        Returns:
+            tuple: (суммарный винрейт команды пользователя, суммарный винрейт команды противников)
+        """
+        enemy_ids, ally_ids = self.parser.get_enemy_team_ids(hero_id)
+
+        # Получаем винрейт героя пользователя
+        user_win_rate = self._get_hero_win_rate(hero_id)
+
+        # Вычисляем винрейт команды пользователя (герой пользователя + 4 союзника)
+        user_team_total = user_win_rate
+        for ally_id in ally_ids:
+            user_team_total += self._get_hero_win_rate(ally_id)
+
+        # Вычисляем винрейт команды противников (5 героев)
+        enemy_team_total = 0
+        for enemy_id in enemy_ids:
+            enemy_team_total += self._get_hero_win_rate(enemy_id)
+
+        return user_team_total, enemy_team_total
+
+
+    def get_team_advantage(self, hero_id):
+        """
+        Определяет преимущество команды пользователя над командой противников
+
+        Args:
+            hero_id (int): ID героя пользователя
+
+        Returns:
+            float: разница винрейтов (user_team - enemy_team)
+                  положительное значение - преимущество пользователя
+                  отрицательное - преимущество противников
+        """
+        user_total, enemy_total = self.calculate_team_win_rates(hero_id)
+        return user_total - enemy_total
+
+
+# file paths
+match_file_path = 'C:/work/DotaHelper_Startap/Data_From_Api/Data/not_dataset/match_data_v3.json'
+vs_file_path = 'C:/work/DotaHelper_Startap/Data_From_Api/Data/not_dataset/meepo_matchup_vs.json'
+with_file_path = 'C:/work/DotaHelper_Startap/Data_From_Api/Data/not_dataset/meepo_matchup_with.json'
+win_rate_file_path = 'C:/work/DotaHelper_Startap/Data_From_Api/Data/not_dataset/win_data_for_all.json'
+
+
+with open(match_file_path, 'r') as f:
+    match_data = json.load(f)
+
+
+parser = NewMatchParser(match_data)
+analyzer = MatchStatsAnalyzer(parser, vs_file_path, with_file_path, win_rate_file_path)
+
+hero_id = 82
+
+# teams
 enemy_ids, user_team_ids = parser.get_enemy_team_ids(hero_id)
-print(f"\nID героев противников: {enemy_ids}")
-print(f"\nID героев союзников: {user_team_ids}")
 
-# user items
+# winrates
+enemy_win_rates = analyzer.get_enemy_win_rates(hero_id)
+ally_win_rates = analyzer.get_ally_win_rates(hero_id)
+user_team_total, enemy_team_total = analyzer.calculate_team_win_rates(hero_id)
+team_advantage = analyzer.get_team_advantage(hero_id)
+# advantage
+kills_advantage = parser.get_kills_advantage_per_stage(hero_id)
+
+print(f"\nKill Advantage: {kills_advantage}")
+print(f"enemys: {enemy_ids}")
+print(f"allies : {user_team_ids}")
+print(f"counters_imp: {enemy_win_rates}")
+print(f"synergy_imp: {ally_win_rates}")
+print(f"meta_imp: {'пользователя' if team_advantage >= 0 else 'противников'} ({team_advantage:.2f})")
+
+# user items per stage
 player_items = parser.get_player_items(hero_id)
-print("\nПредметы игрока по этапам:")
-for group, items in player_items.items():
-    print(f"{group}: {items}")
+print("\nTarget items:")
+for stage, items in player_items.items():
+    print(f"{stage}: {items}")
 
-# enemy items
+
+# enemy items per stage
 enemy_items = parser.get_filtered_enemy_items(hero_id)
-print("\nОтфильтрованные предметы противников по этапам:")
-for group, items in enemy_items.items():
-    print(f"{group}: {items}")
+print("\nenemy:")
+for stage, items in enemy_items.items():
+    print(f"{stage}: {items}")
 
 
-# items_ids = {
-#     0:"Blink Dagger",
-#     1:"Blades of Attack",
-#     2:"Helm of Iron Will",
-#     3:"Javelin",
-#     4:"Quelling Blade",
-#     5:"Ring of Protection",
-#     6:"Gauntlets of Strength",
-#     7:"Slippers of Agility",
-#     8:"Mantle of Intelligence",
-#     9:"Iron Branch",
-#     10:"Circlet",
-#     11:"Gloves of Haste",
-#     12:"Morbid Mask",
-#     13:"Ring of Regen",
-#     14:"Sage's Mask",
-#     15:"Boots of Speed",
-#     16:"Gem of True Sight",
-#     17:"Cloak",
-#     18:"Talisman of Evasion",
-#     19:"Magic Stick",
-#     20:"Magic Wand",
-#     21:"Ghost Scepter",
-#     22:"Clarity",
-#     23:"Healing Salve",
-#     24:"Dust of Appearance",
-#     25:"Bottle",
-#     26:"Tango",
-#     27:"Boots of Travel",
-#     28:"Phase Boots",
-#     29:"Ring of Health",
-#     30:"Power Treads",
-#     31:"Hand of Midas",
-#     32:"Bracer",
-#     33:"Wraith Band",
-#     34:"Null Talisman",
-#     35:"Mekansm",
-#     36:"Vladmir's Offering",
-#     37:"Ring of Basilius",
-#     38:"Pipe of Insight",
-#     39:"Urn of Shadows",
-#     40:"Headdress",
-#     41:"Scythe of Vyse",
-#     42:"Orchid Malevolence",
-#     43:"Eul's Scepter of Divinity",
-#     44:"Force Staff",
-#     45:"Dagon",
-#     46:"Aghanim's Scepter",
-#     47:"Refresher Orb",
-#     48:"Assault Cuirass",
-#     49:"Heart of Tarrasque",
-#     50:"Black King Bar",
-#     51:"Shiva's Guard",
-#     52:"Bloodstone",
-#     53:"Linken's Sphere",
-#     54:"Vanguard",
-#     55:"Blade Mail",
-#     56:"Divine Rapier",
-#     57:"Monkey King Bar",
-#     58:"Radiance",
-#     59:"Butterfly",
-#     60:"Daedalus",
-#     61:"Skull Basher",
-#     62:"Battle Fury",
-#     63:"Manta Style",
-#     64:"Crystalys",
-#     65:"Armlet of Mordiggian",
-#     66:"Shadow Blade",
-#     67:"Sange and Yasha",
-#     68:"Satanic",
-#     69:"Mjollnir",
-#     70:"Eye of Skadi",
-#     71:"Sange",
-#     72:"Helm of the Dominator",
-#     73:"Maelstrom",
-#     74:"Desolator",
-#     75:"Yasha",
-#     76:"Mask of Madness",
-#     77:"Diffusal Blade",
-#     78:"Ethereal Blade",
-#     79:"Soul Ring",
-#     80:"Arcane Boots",
-#     81:"Orb of Venom",
-#     82:"Drum of Endurance",
-#     83:"Veil of Discord",
-#     84:"Diffusal Blade (level 2)",
-#     85:"Rod of Atos",
-#     86:"Abyssal Blade",
-#     87:"Heaven's Halberd",
-#     88:"Tranquil Boots",
-#     89:"Enchanted Mango",
-#     90:"Boots of Travel 2",
-#     91:"Meteor Hammer",
-#     92:"Nullifier",
-#     93:"Lotus Orb",
-#     94:"Solar Crest",
-#     95:"Guardian Greaves",
-#     96:"Aether Lens",
-#     97:"Octarine Core",
-#     98:"Dragon Lance",
-#     99:"Faerie Fire",
-#     100:"Crimson Guard",
-#     101:"Wind Lace",
-#     102:"Moon Shard",
-#     103:"Silver Edge",
-#     104:"Bloodthorn",
-#     105:"Echo Sabre",
-#     106:"Glimmer Cape",
-#     107:"Aeon Disk",
-#     108:"Kaya",
-#     109:"Crown",
-#     110:"Hurricane Pike",
-#     111:"Infused Raindrops",
-#     112:"Spirit Vessel",
-#     113:"Holy Locket",
-#     114:"Kaya and Sange",
-#     115:"Yasha and Kaya",
-#     116:"Voodoo Mask",
-#     117:"Witch Blade",
-#     118:"Falcon Blade",
-#     119:"Mage Slayer",
-#     120:"Overwhelming Blink",
-#     121:"Swift Blink",
-#     123:"Arcane Blink",
-#     124:"Aghanim's Shard",
-#     125:"Wind Waker",
-#     126:"Helm of the Overlord",
-#     127:"Eternal Shroud",
-#     128:"Revenant's Brooch",
-#     129:"Boots of Bearing",
-#     130:"Harpoon",
-#     131:"Diffusal Blade",
-#     132:"Disperser",
-#     133:"Phylactery",
-#     134:"Blood Grenade",
-#     135:"Pavise",
-#     136:"Gleipnir",
-#     137:"Orb of Frost",
-#     138:"Parasma",
-#     139:"Khanda"
-# }
+# winner = parser.get_winner()
+# print(f"\nПобедитель матча: {winner}")
+
+# result = parser.get_player_result(hero_id)
+# print(f"\nUser victory status: {result}")
+
+# stage_winners = parser.stage_winner(hero_id)
+# print(f"Stage Winners (player perspective): {stage_winners}")
