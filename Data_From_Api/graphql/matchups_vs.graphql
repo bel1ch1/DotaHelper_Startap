@@ -1,0 +1,15 @@
+{
+  heroStats{
+    matchUp(
+      heroId:82
+      take:145
+      orderBy:2
+    ){
+      heroId
+    	vs{
+          heroId2
+          winsAverage
+      }
+    }
+  }
+}

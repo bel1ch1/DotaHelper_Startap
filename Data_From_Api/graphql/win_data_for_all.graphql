@@ -1,0 +1,13 @@
+{
+  heroStats{
+    winGameVersion(
+      positionIds:POSITION_2
+      gameModeIds:ALL_PICK_RANKED
+    	take: 1
+    ){
+      heroId
+      matchCount
+      winCount
+    }
+  }
+}
