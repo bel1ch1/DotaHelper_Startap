@@ -1,0 +1,513 @@
+{
+    "data": {
+      "heroStats": {
+        "matchUp": [
+          {
+            "heroId": 82,
+            "with": [
+              {
+                "heroId2": 94,
+                "winsAverage": 0.639
+              },
+              {
+                "heroId2": 95,
+                "winsAverage": 0.636
+              },
+              {
+                "heroId2": 42,
+                "winsAverage": 0.621
+              },
+              {
+                "heroId2": 135,
+                "winsAverage": 0.61
+              },
+              {
+                "heroId2": 108,
+                "winsAverage": 0.595
+              },
+              {
+                "heroId2": 30,
+                "winsAverage": 0.595
+              },
+              {
+                "heroId2": 37,
+                "winsAverage": 0.595
+              },
+              {
+                "heroId2": 110,
+                "winsAverage": 0.592
+              },
+              {
+                "heroId2": 54,
+                "winsAverage": 0.59
+              },
+              {
+                "heroId2": 6,
+                "winsAverage": 0.587
+              },
+              {
+                "heroId2": 90,
+                "winsAverage": 0.587
+              },
+              {
+                "heroId2": 109,
+                "winsAverage": 0.586
+              },
+              {
+                "heroId2": 112,
+                "winsAverage": 0.586
+              },
+              {
+                "heroId2": 27,
+                "winsAverage": 0.586
+              },
+              {
+                "heroId2": 58,
+                "winsAverage": 0.583
+              },
+              {
+                "heroId2": 66,
+                "winsAverage": 0.583
+              },
+              {
+                "heroId2": 36,
+                "winsAverage": 0.581
+              },
+              {
+                "heroId2": 96,
+                "winsAverage": 0.579
+              },
+              {
+                "heroId2": 43,
+                "winsAverage": 0.579
+              },
+              {
+                "heroId2": 67,
+                "winsAverage": 0.579
+              },
+              {
+                "heroId2": 50,
+                "winsAverage": 0.577
+              },
+              {
+                "heroId2": 57,
+                "winsAverage": 0.575
+              },
+              {
+                "heroId2": 111,
+                "winsAverage": 0.575
+              },
+              {
+                "heroId2": 62,
+                "winsAverage": 0.574
+              },
+              {
+                "heroId2": 68,
+                "winsAverage": 0.573
+              },
+              {
+                "heroId2": 72,
+                "winsAverage": 0.573
+              },
+              {
+                "heroId2": 104,
+                "winsAverage": 0.572
+              },
+              {
+                "heroId2": 8,
+                "winsAverage": 0.564
+              },
+              {
+                "heroId2": 9,
+                "winsAverage": 0.563
+              },
+              {
+                "heroId2": 55,
+                "winsAverage": 0.562
+              },
+              {
+                "heroId2": 63,
+                "winsAverage": 0.56
+              },
+              {
+                "heroId2": 2,
+                "winsAverage": 0.559
+              },
+              {
+                "heroId2": 91,
+                "winsAverage": 0.559
+              },
+              {
+                "heroId2": 71,
+                "winsAverage": 0.558
+              },
+              {
+                "heroId2": 31,
+                "winsAverage": 0.558
+              },
+              {
+                "heroId2": 32,
+                "winsAverage": 0.557
+              },
+              {
+                "heroId2": 29,
+                "winsAverage": 0.557
+              },
+              {
+                "heroId2": 4,
+                "winsAverage": 0.554
+              },
+              {
+                "heroId2": 22,
+                "winsAverage": 0.553
+              },
+              {
+                "heroId2": 60,
+                "winsAverage": 0.552
+              },
+              {
+                "heroId2": 64,
+                "winsAverage": 0.551
+              },
+              {
+                "heroId2": 26,
+                "winsAverage": 0.551
+              },
+              {
+                "heroId2": 103,
+                "winsAverage": 0.549
+              },
+              {
+                "heroId2": 85,
+                "winsAverage": 0.548
+              },
+              {
+                "heroId2": 84,
+                "winsAverage": 0.547
+              },
+              {
+                "heroId2": 51,
+                "winsAverage": 0.546
+              },
+              {
+                "heroId2": 121,
+                "winsAverage": 0.545
+              },
+              {
+                "heroId2": 80,
+                "winsAverage": 0.545
+              },
+              {
+                "heroId2": 87,
+                "winsAverage": 0.542
+              },
+              {
+                "heroId2": 7,
+                "winsAverage": 0.541
+              },
+              {
+                "heroId2": 88,
+                "winsAverage": 0.54
+              },
+              {
+                "heroId2": 81,
+                "winsAverage": 0.539
+              },
+              {
+                "heroId2": 86,
+                "winsAverage": 0.539
+              },
+              {
+                "heroId2": 23,
+                "winsAverage": 0.538
+              },
+              {
+                "heroId2": 33,
+                "winsAverage": 0.536
+              },
+              {
+                "heroId2": 83,
+                "winsAverage": 0.536
+              },
+              {
+                "heroId2": 145,
+                "winsAverage": 0.536
+              },
+              {
+                "heroId2": 21,
+                "winsAverage": 0.536
+              },
+              {
+                "heroId2": 52,
+                "winsAverage": 0.535
+              },
+              {
+                "heroId2": 97,
+                "winsAverage": 0.535
+              },
+              {
+                "heroId2": 131,
+                "winsAverage": 0.535
+              },
+              {
+                "heroId2": 119,
+                "winsAverage": 0.535
+              },
+              {
+                "heroId2": 70,
+                "winsAverage": 0.534
+              },
+              {
+                "heroId2": 78,
+                "winsAverage": 0.534
+              },
+              {
+                "heroId2": 1,
+                "winsAverage": 0.531
+              },
+              {
+                "heroId2": 138,
+                "winsAverage": 0.531
+              },
+              {
+                "heroId2": 14,
+                "winsAverage": 0.53
+              },
+              {
+                "heroId2": 73,
+                "winsAverage": 0.529
+              },
+              {
+                "heroId2": 53,
+                "winsAverage": 0.528
+              },
+              {
+                "heroId2": 20,
+                "winsAverage": 0.526
+              },
+              {
+                "heroId2": 102,
+                "winsAverage": 0.526
+              },
+              {
+                "heroId2": 46,
+                "winsAverage": 0.526
+              },
+              {
+                "heroId2": 40,
+                "winsAverage": 0.526
+              },
+              {
+                "heroId2": 69,
+                "winsAverage": 0.526
+              },
+              {
+                "heroId2": 75,
+                "winsAverage": 0.525
+              },
+              {
+                "heroId2": 98,
+                "winsAverage": 0.524
+              },
+              {
+                "heroId2": 28,
+                "winsAverage": 0.523
+              },
+              {
+                "heroId2": 18,
+                "winsAverage": 0.522
+              },
+              {
+                "heroId2": 16,
+                "winsAverage": 0.52
+              },
+              {
+                "heroId2": 137,
+                "winsAverage": 0.516
+              },
+              {
+                "heroId2": 136,
+                "winsAverage": 0.514
+              },
+              {
+                "heroId2": 56,
+                "winsAverage": 0.514
+              },
+              {
+                "heroId2": 47,
+                "winsAverage": 0.513
+              },
+              {
+                "heroId2": 123,
+                "winsAverage": 0.511
+              },
+              {
+                "heroId2": 74,
+                "winsAverage": 0.51
+              },
+              {
+                "heroId2": 129,
+                "winsAverage": 0.509
+              },
+              {
+                "heroId2": 99,
+                "winsAverage": 0.508
+              },
+              {
+                "heroId2": 93,
+                "winsAverage": 0.508
+              },
+              {
+                "heroId2": 19,
+                "winsAverage": 0.507
+              },
+              {
+                "heroId2": 34,
+                "winsAverage": 0.507
+              },
+              {
+                "heroId2": 48,
+                "winsAverage": 0.507
+              },
+              {
+                "heroId2": 35,
+                "winsAverage": 0.505
+              },
+              {
+                "heroId2": 15,
+                "winsAverage": 0.504
+              },
+              {
+                "heroId2": 49,
+                "winsAverage": 0.503
+              },
+              {
+                "heroId2": 101,
+                "winsAverage": 0.503
+              },
+              {
+                "heroId2": 5,
+                "winsAverage": 0.502
+              },
+              {
+                "heroId2": 76,
+                "winsAverage": 0.5
+              },
+              {
+                "heroId2": 45,
+                "winsAverage": 0.5
+              },
+              {
+                "heroId2": 38,
+                "winsAverage": 0.498
+              },
+              {
+                "heroId2": 10,
+                "winsAverage": 0.497
+              },
+              {
+                "heroId2": 11,
+                "winsAverage": 0.495
+              },
+              {
+                "heroId2": 3,
+                "winsAverage": 0.489
+              },
+              {
+                "heroId2": 92,
+                "winsAverage": 0.488
+              },
+              {
+                "heroId2": 41,
+                "winsAverage": 0.486
+              },
+              {
+                "heroId2": 114,
+                "winsAverage": 0.485
+              },
+              {
+                "heroId2": 44,
+                "winsAverage": 0.483
+              },
+              {
+                "heroId2": 39,
+                "winsAverage": 0.482
+              },
+              {
+                "heroId2": 13,
+                "winsAverage": 0.482
+              },
+              {
+                "heroId2": 128,
+                "winsAverage": 0.48
+              },
+              {
+                "heroId2": 59,
+                "winsAverage": 0.48
+              },
+              {
+                "heroId2": 79,
+                "winsAverage": 0.479
+              },
+              {
+                "heroId2": 105,
+                "winsAverage": 0.475
+              },
+              {
+                "heroId2": 120,
+                "winsAverage": 0.474
+              },
+              {
+                "heroId2": 107,
+                "winsAverage": 0.471
+              },
+              {
+                "heroId2": 100,
+                "winsAverage": 0.467
+              },
+              {
+                "heroId2": 89,
+                "winsAverage": 0.459
+              },
+              {
+                "heroId2": 12,
+                "winsAverage": 0.444
+              },
+              {
+                "heroId2": 113,
+                "winsAverage": 0.438
+              },
+              {
+                "heroId2": 126,
+                "winsAverage": 0.436
+              },
+              {
+                "heroId2": 25,
+                "winsAverage": 0.43
+              },
+              {
+                "heroId2": 17,
+                "winsAverage": 0.419
+              },
+              {
+                "heroId2": 106,
+                "winsAverage": 0.415
+              },
+              {
+                "heroId2": 65,
+                "winsAverage": 0.415
+              },
+              {
+                "heroId2": 61,
+                "winsAverage": 0.407
+              },
+              {
+                "heroId2": 77,
+                "winsAverage": 0.39
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
