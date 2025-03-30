@@ -1,8 +1,5 @@
-import os
 import json
-import numpy as np
-import pandas as pd
-from pathlib import Path
+
 
 class NewMatchParser:
     def __init__(self, json_data):
@@ -13,6 +10,7 @@ class NewMatchParser:
         self.radiantKills = self.data.get('data', {}).get('match', {}).get('radiantKills', [])
         self.direKills = self.data.get('data', {}).get('match', {}).get('direKills', [])
 
+        # Обновленный список разрешенных ID предметов пользователя (только ключи)
         self.allowed_player_item_ids = {
             1, 2, 6, 7, 11, 12, 13, 14, 15, 16, 20, 25, 26, 27, 28, 29, 30, 31, 32, 34,
             36, 37, 38, 39, 40, 41, 42, 48, 50, 56, 63, 65, 73, 75, 77, 79, 81, 88, 90,
@@ -25,6 +23,7 @@ class NewMatchParser:
             964, 1097, 1107, 1123, 1128, 1466, 1575, 1806
         }
 
+        # Список разрешенных ID предметов противников (оставьте ваш текущий)
         self.allowed_item_ids = [
             37, 40, 96, 98, 100, 102, 104, 119, 127, 139,
             152, 156, 160, 176, 204, 206, 208, 210, 249,
@@ -295,10 +294,9 @@ class NewMatchParser:
 
 
 class MatchStatsAnalyzer:
-    def __init__(self, match_parser, vs_data, with_data, win_rate_data):
+    def __init__(self, match_parser, vs_file_path, with_file_path, win_rate_file_path):
         """
         Инициализирует анализатор статистики матча
-
         Args:
             match_parser (NewMatchParser): экземпляр парсера матча
             vs_file_path (str): путь к файлу с винрейтами против врагов
@@ -306,20 +304,18 @@ class MatchStatsAnalyzer:
             win_rate_file_path (str): путь к файлу с общей статистикой героев
         """
         self.parser = match_parser
-        self.vs_data = vs_data
-        self.with_data = with_data
-        self.win_rate_data = win_rate_data
+        self.vs_data = self._load_json_file(vs_file_path)
+        self.with_data = self._load_json_file(with_file_path)
+        self.win_rate_data = self._load_json_file(win_rate_file_path)
 
     def _load_json_file(self, file_path):
         """Загружает JSON файл"""
         with open(file_path, 'r') as f:
             return json.load(f)
 
-
     def _find_hero_matchup(self, hero_id, hero_id2, matchup_data, matchup_type='vs'):
         """
         Ищет винрейт героя против другого героя или с союзником
-
         Args:
             hero_id (int): ID основного героя
             hero_id2 (int): ID героя противника/союзника
@@ -339,7 +335,7 @@ class MatchStatsAnalyzer:
                     if rel.get('heroId2') == hero_id2:
                         return rel.get('winsAverage', 0.5)
 
-        # Возвращаем 0.5 если данных нет
+        # Возвращаем 0.5 если данных нет (нейтральный винрейт)
         return 0.5
 
 
@@ -425,7 +421,7 @@ class MatchStatsAnalyzer:
         for ally_id in ally_ids:
             user_team_total += self._get_hero_win_rate(ally_id)
 
-        # Вычисляем винрейт команды противников
+        # Вычисляем винрейт команды противников (5 героев)
         enemy_team_total = 0
         for enemy_id in enemy_ids:
             enemy_team_total += self._get_hero_win_rate(enemy_id)
@@ -442,151 +438,65 @@ class MatchStatsAnalyzer:
 
         Returns:
             float: разница винрейтов (user_team - enemy_team)
-                  положительное значение - преимущество пользователя
-                  отрицательное - преимущество противников
+                положительное значение - преимущество пользователя
+                отрицательное - преимущество противников
         """
         user_total, enemy_total = self.calculate_team_win_rates(hero_id)
+
         return user_total - enemy_total
 
 
-class MatchDataTransformer:
-    def __init__(self, parser, analyzer):
-        self.parser = parser
-        self.analyzer = analyzer
-
-        self.item_encoding = {item: idx+1 for idx, item in enumerate(parser.allowed_player_item_ids)}
-        self.item_encoding[0] = 0
-
-        all_hero_ids = set()
-        if hasattr(parser, 'hero_items'):
-            all_hero_ids.update(parser.hero_items.keys())
-        all_hero_ids.update(range(1, 150))
-        self.hero_encoding = {hero_id: idx+1 for idx, hero_id in enumerate(sorted(all_hero_ids))}
-        self.hero_encoding[0] = 0
-
-
-    def _encode_items(self, items, max_length):
-        encoded = [self.item_encoding.get(item, 0) for item in items]
-        encoded += [0] * (max_length - len(encoded))
-        return encoded[:max_length]
-
-
-    def _encode_heroes(self, hero_ids, max_length):
-        encoded = [self.hero_encoding.get(hero_id, 0) for hero_id in hero_ids]
-        encoded += [0] * (max_length - len(encoded))
-        return encoded[:max_length]
-
-
-    def _encode_win_rates(self, win_rates, max_length):
-        encoded = list(win_rates) + [0.5] * (max_length - len(win_rates))
-        return encoded[:max_length]
-
-
-    def transform_to_dataset(self, hero_id):
-        enemy_ids, ally_ids = self.parser.get_enemy_team_ids(hero_id)
-        enemy_win_rates = self.analyzer.get_enemy_win_rates(hero_id)
-        ally_win_rates = self.analyzer.get_ally_win_rates(hero_id)
-        user_team_total, enemy_team_total = self.analyzer.calculate_team_win_rates(hero_id)
-        kills_advantage = self.parser.get_kills_advantage_per_stage(hero_id)
-        player_items = self.parser.get_player_items(hero_id)
-        enemy_items = self.parser.get_filtered_enemy_items(hero_id)
-
-        num_stages = len(kills_advantage) if kills_advantage else 0
-        records = []
-
-        for stage in range(num_stages):
-            stage_key = f'group_{stage}'
-
-            encoded_user_items = self._encode_items(player_items.get(stage_key, []), 9)
-            encoded_enemy_items = self._encode_items(enemy_items.get(stage_key, []), 29)
-            encoded_enemy_heroes = self._encode_heroes(enemy_ids, 5)
-            encoded_ally_heroes = self._encode_heroes(ally_ids, 4)
-            encoded_enemy_wrs = self._encode_win_rates(enemy_win_rates, 5)
-            encoded_ally_wrs = self._encode_win_rates(ally_win_rates, 4)
-
-            record = {
-                'stage': stage,
-                'kill_advantage': kills_advantage[stage] if stage < len(kills_advantage) else 0,
-                'team_advantage': user_team_total - enemy_team_total,
-                **{f'enemy_item_{i}': item for i, item in enumerate(encoded_enemy_items)},
-                **{f'enemy_hero_{i}': hero for i, hero in enumerate(encoded_enemy_heroes)},
-                **{f'ally_hero_{i}': hero for i, hero in enumerate(encoded_ally_heroes)},
-                **{f'enemy_wr_{i}': wr for i, wr in enumerate(encoded_enemy_wrs)},
-                **{f'ally_wr_{i}': wr for i, wr in enumerate(encoded_ally_wrs)},
-                **{f'target_item_{i}': item for i, item in enumerate(encoded_user_items)}
-            }
-
-            records.append(record)
-
-        return pd.DataFrame(records)
-
-
-class MatchDatasetBuilder:
-    def __init__(self, vs_file_path, with_file_path, win_rate_file_path, output_csv_path):
-        self.vs_file_path = vs_file_path
-        self.with_file_path = with_file_path
-        self.win_rate_file_path = win_rate_file_path
-        self.output_csv_path = output_csv_path
-
-        with open(vs_file_path, 'r') as f:
-            self.vs_data = json.load(f)
-
-        with open(with_file_path, 'r') as f:
-            self.with_data = json.load(f)
-
-        with open(win_rate_file_path, 'r') as f:
-            self.win_rate_data = json.load(f)
-
-        if os.path.exists(output_csv_path):
-            self.dataset = pd.read_csv(output_csv_path)
-        else:
-            self.dataset = pd.DataFrame()
-
-
-    def process_folder(self, raw_matches_folder, hero_id):
-        match_files = [f for f in os.listdir(raw_matches_folder) if f.endswith('.json')]
-
-        for filename in match_files:
-            file_path = os.path.join(raw_matches_folder, filename)
-
-            try:
-                with open(file_path, 'r') as f:
-                    match_data = json.load(f)
-
-                parser = NewMatchParser(match_data)
-                analyzer = MatchStatsAnalyzer(parser, self.vs_data, self.with_data, self.win_rate_data)
-                transformer = MatchDataTransformer(parser, analyzer)
-
-                match_df = transformer.transform_to_dataset(hero_id)
-                self.dataset = pd.concat([self.dataset, match_df], ignore_index=True)
-
-                os.remove(file_path)
-                print(f"Обработан и удален файл: {filename}")
-
-            except Exception as e:
-                print(f"Ошибка при обработке файла {filename}: {str(e)}")
-
-        self.save_dataset()
-
-
-    def save_dataset(self):
-        self.dataset.to_csv(self.output_csv_path, index=False)
-        print(f"Датасет сохранен в {self.output_csv_path}")
-
-
-# file paths
+ # file paths
+match_file_path = 'C:/work/DotaHelper_Startap/Data_From_Api/Data/not_dataset/match_data_v3.json'
 vs_file_path = 'C:/work/DotaHelper_Startap/Data_From_Api/Data/not_dataset/meepo_matchup_vs.json'
 with_file_path = 'C:/work/DotaHelper_Startap/Data_From_Api/Data/not_dataset/meepo_matchup_with.json'
 win_rate_file_path = 'C:/work/DotaHelper_Startap/Data_From_Api/Data/not_dataset/win_data_for_all.json'
-raw_matches_folder = 'raw_matches'
-output_csv_path ='match_dataset.csv'
 
-# Создаем папку raw_matches если ее нет
-Path(raw_matches_folder).mkdir(exist_ok=True)
 
-# ID героя пользователя (Meepo)
+with open(match_file_path, 'r') as f:
+    match_data = json.load(f)
+
+
+parser = NewMatchParser(match_data)
+analyzer = MatchStatsAnalyzer(parser, vs_file_path, with_file_path, win_rate_file_path)
+
 hero_id = 82
 
-# Запуск обработки
-builder = MatchDatasetBuilder(vs_file_path, with_file_path, win_rate_file_path, output_csv_path)
-builder.process_folder(raw_matches_folder, hero_id)
+# teams
+enemy_ids, user_team_ids = parser.get_enemy_team_ids(hero_id)
+print(f"\nID героев противников: {enemy_ids}")
+print(f"\nID героев союзников: {user_team_ids}")
+
+# user items
+# winrates
+enemy_win_rates = analyzer.get_enemy_win_rates(hero_id)
+ally_win_rates = analyzer.get_ally_win_rates(hero_id)
+user_team_total, enemy_team_total = analyzer.calculate_team_win_rates(hero_id)
+team_advantage = analyzer.get_team_advantage(hero_id)
+# advantage
+kills_advantage = parser.get_kills_advantage_per_stage(hero_id)
+
+print(f"\nKill Advantage: {kills_advantage}")
+print(f"enemys: {enemy_ids}")
+print(f"allies : {user_team_ids}")
+print(f"counters_imp: {enemy_win_rates}")
+print(f"synergy_imp: {ally_win_rates}")
+print(f"meta_imp: {'пользователя' if team_advantage >= 0 else 'противников'} ({team_advantage:.2f})")
+
+# user items per stage
+player_items = parser.get_player_items(hero_id)
+
+print("\nTarget items:")
+for stage, items in player_items.items():
+    print(f"{stage}: {items}")
+
+# enemy items per stage
+enemy_items = parser.get_filtered_enemy_items(hero_id)
+print("\nОтфильтрованные предметы противников по этапам:")
+for group, items in enemy_items.items():
+    print(f"{group}: {items}")
+
+
+print("\nenemy:")
+for stage, items in enemy_items.items():
+    print(f"{stage}: {items}")
