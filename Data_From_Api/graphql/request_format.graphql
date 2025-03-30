@@ -12,9 +12,17 @@ query{
       }
       position
       playbackData{
-        purchaseEvents{
+        inventoryEvents{
           time
-          itemId
+          item0{itemId}
+          item1{itemId}
+          item2{itemId}
+          item3{itemId}
+          item4{itemId}
+          item5{itemId}
+          backPack0{itemId}
+          backPack1{itemId}
+          backPack2{itemId}
         }
       }
     }
