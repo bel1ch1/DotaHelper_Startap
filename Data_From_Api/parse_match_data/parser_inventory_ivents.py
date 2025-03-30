@@ -1,5 +1,6 @@
 import json
-
+import numpy as np
+import pandas as pd
 
 class NewMatchParser:
     def __init__(self, json_data):
@@ -448,6 +449,114 @@ class MatchStatsAnalyzer:
         return user_total - enemy_total
 
 
+class MatchDataTransformer:
+    def __init__(self, parser, analyzer):
+        """
+        Инициализирует трансформер данных матча
+
+        Args:
+            parser (NewMatchParser): экземпляр парсера матча
+            analyzer (MatchStatsAnalyzer): экземпляр анализатора статистики
+        """
+        self.parser = parser
+        self.analyzer = analyzer
+
+        # Словарь для кодирования предметов
+        self.item_encoding = {item: idx+1 for idx, item in enumerate(parser.allowed_player_item_ids)}
+        self.item_encoding[0] = 0  # 0 означает отсутствие предмета
+
+        # Словарь для кодирования героев
+        all_hero_ids = set()
+        if hasattr(parser, 'hero_items'):
+            all_hero_ids.update(parser.hero_items.keys())
+        all_hero_ids.update(range(1, 150))
+        self.hero_encoding = {hero_id: idx+1 for idx, hero_id in enumerate(sorted(all_hero_ids))}
+        self.hero_encoding[0] = 0
+
+    def _encode_items(self, items, max_length):
+        """Кодирует список предметов с фиксированной длиной"""
+        encoded = [self.item_encoding.get(item, 0) for item in items]
+        encoded += [0] * (max_length - len(encoded))
+        return encoded[:max_length]
+
+    def _encode_heroes(self, hero_ids, max_length):
+        """Кодирует список героев с фиксированной длиной"""
+        encoded = [self.hero_encoding.get(hero_id, 0) for hero_id in hero_ids]
+        encoded += [0] * (max_length - len(encoded))
+        return encoded[:max_length]
+
+    def _encode_win_rates(self, win_rates, max_length):
+        """Кодирует винрейты с фиксированной длиной"""
+        encoded = list(win_rates) + [0.5] * (max_length - len(win_rates))
+        return encoded[:max_length]
+
+    def transform_to_dataset(self, hero_id):
+        """
+        Преобразует данные матча в датасет по стадиям
+
+        Args:
+            hero_id (int): ID героя пользователя
+
+        Returns:
+            pd.DataFrame: датасет с данными по стадиям
+        """
+        # Получаем все необходимые данные
+        enemy_ids, ally_ids = self.parser.get_enemy_team_ids(hero_id)
+        enemy_win_rates = self.analyzer.get_enemy_win_rates(hero_id)
+        ally_win_rates = self.analyzer.get_ally_win_rates(hero_id)
+        user_team_total, enemy_team_total = self.analyzer.calculate_team_win_rates(hero_id)
+        kills_advantage = self.parser.get_kills_advantage_per_stage(hero_id)
+        player_items = self.parser.get_player_items(hero_id)
+        enemy_items = self.parser.get_filtered_enemy_items(hero_id)
+
+        # Определяем количество стадий
+        num_stages = len(kills_advantage) if kills_advantage else 0
+
+        # Создаем список для хранения записей
+        records = []
+
+        for stage in range(num_stages):
+            stage_key = f'group_{stage}'
+
+            # Кодируем предметы (9 для пользователя, 29 для противников)
+            encoded_user_items = self._encode_items(player_items.get(stage_key, []), 9)
+            encoded_enemy_items = self._encode_items(enemy_items.get(stage_key, []), 29)
+
+            # Кодируем героев (5 противников, 4 союзника)
+            encoded_enemy_heroes = self._encode_heroes(enemy_ids, 5)
+            encoded_ally_heroes = self._encode_heroes(ally_ids, 4)
+
+            # Кодируем винрейты (5 против врагов, 4 с союзниками)
+            encoded_enemy_wrs = self._encode_win_rates(enemy_win_rates, 5)
+            encoded_ally_wrs = self._encode_win_rates(ally_win_rates, 4)
+
+            # Создаем запись
+            record = {
+                'stage': stage,
+                'kill_advantage': kills_advantage[stage] if stage < len(kills_advantage) else 0,
+                'team_advantage': user_team_total - enemy_team_total,
+
+                # Предметы противников (29 колонок)
+                **{f'enemy_item_{i}': item for i, item in enumerate(encoded_enemy_items)},
+
+                # Герои (5 противников, 4 союзника)
+                **{f'enemy_hero_{i}': hero for i, hero in enumerate(encoded_enemy_heroes)},
+                **{f'ally_hero_{i}': hero for i, hero in enumerate(encoded_ally_heroes)},
+
+                # Винрейты (5 против врагов, 4 с союзниками)
+                **{f'enemy_wr_{i}': wr for i, wr in enumerate(encoded_enemy_wrs)},
+                **{f'ally_wr_{i}': wr for i, wr in enumerate(encoded_ally_wrs)},
+
+                # Целевые предметы (9 колонок)
+                **{f'target_item_{i}': item for i, item in enumerate(encoded_user_items)}
+            }
+
+            records.append(record)
+
+        return pd.DataFrame(records)
+
+
+
 # file paths
 match_file_path = 'C:/work/DotaHelper_Startap/Data_From_Api/Data/not_dataset/match_data_v3.json'
 vs_file_path = 'C:/work/DotaHelper_Startap/Data_From_Api/Data/not_dataset/meepo_matchup_vs.json'
@@ -464,36 +573,48 @@ analyzer = MatchStatsAnalyzer(parser, vs_file_path, with_file_path, win_rate_fil
 
 hero_id = 82
 
-# teams
-enemy_ids, user_team_ids = parser.get_enemy_team_ids(hero_id)
+# Инициализация трансформера
+transformer = MatchDataTransformer(parser, analyzer)
 
-# winrates
-enemy_win_rates = analyzer.get_enemy_win_rates(hero_id)
-ally_win_rates = analyzer.get_ally_win_rates(hero_id)
-user_team_total, enemy_team_total = analyzer.calculate_team_win_rates(hero_id)
-team_advantage = analyzer.get_team_advantage(hero_id)
-# advantage
-kills_advantage = parser.get_kills_advantage_per_stage(hero_id)
+# Преобразование данных в датасет
+dataset = transformer.transform_to_dataset(hero_id)
 
-print(f"\nKill Advantage: {kills_advantage}")
-print(f"enemys: {enemy_ids}")
-print(f"allies : {user_team_ids}")
-print(f"counters_imp: {enemy_win_rates}")
-print(f"synergy_imp: {ally_win_rates}")
-print(f"meta_imp: {'пользователя' if team_advantage >= 0 else 'противников'} ({team_advantage:.2f})")
+# Сохранение в CSV
+dataset.to_csv('match_dataset.csv', index=False)
 
-# user items per stage
-player_items = parser.get_player_items(hero_id)
-print("\nTarget items:")
-for stage, items in player_items.items():
-    print(f"{stage}: {items}")
+# Вывод первых строк датасета
+print(dataset.head())
+
+# # teams
+# enemy_ids, user_team_ids = parser.get_enemy_team_ids(hero_id)
+
+# # winrates
+# enemy_win_rates = analyzer.get_enemy_win_rates(hero_id)
+# ally_win_rates = analyzer.get_ally_win_rates(hero_id)
+# user_team_total, enemy_team_total = analyzer.calculate_team_win_rates(hero_id)
+# team_advantage = analyzer.get_team_advantage(hero_id)
+# # advantage
+# kills_advantage = parser.get_kills_advantage_per_stage(hero_id)
+
+# print(f"\nKill Advantage: {kills_advantage}")
+# print(f"enemys: {enemy_ids}")
+# print(f"allies : {user_team_ids}")
+# print(f"counters_imp: {enemy_win_rates}")
+# print(f"synergy_imp: {ally_win_rates}")
+# print(f"meta_imp: {'пользователя' if team_advantage >= 0 else 'противников'} ({team_advantage:.2f})")
+
+# # user items per stage
+# player_items = parser.get_player_items(hero_id)
+# print("\nTarget items:")
+# for stage, items in player_items.items():
+#     print(f"{stage}: {items}")
 
 
-# enemy items per stage
-enemy_items = parser.get_filtered_enemy_items(hero_id)
-print("\nenemy:")
-for stage, items in enemy_items.items():
-    print(f"{stage}: {items}")
+# # enemy items per stage
+# enemy_items = parser.get_filtered_enemy_items(hero_id)
+# print("\nenemy:")
+# for stage, items in enemy_items.items():
+#     print(f"{stage}: {items}")
 
 
 # winner = parser.get_winner()
