@@ -4,6 +4,9 @@ Captured_screens
 experiments
 /experiments
 .experiments
+raw_matches
+/raw_matches
+.raw_matches
 /env
 .env
 env
