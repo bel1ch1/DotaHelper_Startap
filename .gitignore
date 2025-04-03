@@ -5,6 +5,9 @@ experiments
 /experiments
 .experiments
 raw_matches
+/raw_tets_matches
+.raw_test_matches
+raw_test_matches
 /raw_matches
 .raw_matches
 /env

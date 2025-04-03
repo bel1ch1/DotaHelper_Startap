@@ -9,8 +9,8 @@ load_dotenv()
 api_key = os.getenv('STRATZ_API_KEY')
 
 # Настройки
-INPUT_JSON = 'C:/work/DotaHelper_Startap/Data_From_Api/Data/not_dataset/meepo_ids.json'
-OUTPUT_DIR = 'raw_matches'
+INPUT_JSON = 'C:/work/DotaHelper_Startap/Data_From_Api/Data/not_dataset/meepo_test_ids.json'
+OUTPUT_DIR = 'raw_test_matches'
 
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
@@ -55,19 +55,38 @@ query {{
 }}
 """
 
-def fetch_match_data(match_id):
+def fetch_match_data(match_id, max_retries=3):
     """Загружает данные матча по API и сохраняет в JSON."""
-    query = QUERY_TEMPLATE.format(match_id=match_id)
-    response = requests.post(url, headers=headers, json={'query': query})
+    for attempt in range(max_retries):
+        try:
+            query = QUERY_TEMPLATE.format(match_id=match_id)
+            response = requests.post(url, headers=headers, json={'query': query})
+            response.raise_for_status()  # Проверяем на HTTP ошибки
 
-    if response.status_code == 200:
-        data = response.json()
-        filename = os.path.join(OUTPUT_DIR, f'match_{match_id}.json')
-        with open(filename, 'w', encoding='utf-8') as f:
-            json.dump(data, f, ensure_ascii=False, indent=2)
-        print(f"Сохранён матч {match_id}")
-    else:
-        print(f"Ошибка при запросе матча {match_id}: {response.status_code}")
+            data = response.json()
+
+            # Проверяем наличие ошибок в ответе GraphQL
+            if 'errors' in data:
+                print(f"GraphQL ошибка в матче {match_id}: {data['errors']}")
+                time.sleep(1)
+                continue
+
+            filename = os.path.join(OUTPUT_DIR, f'match_{match_id}.json')
+            with open(filename, 'w', encoding='utf-8') as f:
+                json.dump(data, f, ensure_ascii=False, indent=2)
+            print(f"Сохранён матч {match_id}")
+            return True
+
+        except requests.exceptions.RequestException as e:
+            print(f"Ошибка при запросе матча {match_id} (попытка {attempt + 1}/{max_retries}): {str(e)}")
+            time.sleep(1)  # Задержка перед повторной попыткой
+        except Exception as e:
+            print(f"Неожиданная ошибка при обработке матча {match_id}: {str(e)}")
+            time.sleep(1)
+            return False
+
+    print(f"Не удалось загрузить матч {match_id} после {max_retries} попыток")
+    return False
 
 def main():
     # Загружаем список matchId из JSON-файла
@@ -83,7 +102,7 @@ def main():
     # Загружаем данные для каждого матча
     for match_id in match_ids:
         fetch_match_data(match_id)
-        time.sleep(1)
+        time.sleep(1)  # Базовая задержка между запросами
 
 if __name__ == '__main__':
     main()
