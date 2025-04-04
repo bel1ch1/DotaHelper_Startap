@@ -15,7 +15,7 @@ class NewMatchParser:
 
         self.allowed_player_item_ids = {
             1, 2, 6, 7, 11, 12, 13, 14, 15, 16, 20, 25, 26, 27, 28, 29, 30, 31, 32, 34,
-            36, 37, 38, 39, 40, 41, 42, 48, 50, 56, 63, 65, 73, 75, 77, 79, 81, 88, 90,
+            36, 37, 38, 39, 40, 41, 48, 50, 56, 63, 65, 73, 75, 77, 79, 81, 88, 90,
             92, 94, 96, 98, 100, 102, 104, 108, 110, 112, 114, 116, 119, 121, 123, 125,
             127, 133, 135, 137, 139, 141, 143, 145, 147, 149, 151, 152, 154, 156, 158,
             160, 162, 164, 166, 168, 170, 172, 174, 176, 178, 180, 181, 185, 190, 196,
@@ -723,8 +723,8 @@ class MatchDatasetBuilder:
 vs_file_path = 'C:/work/DotaHelper_Startap/Data_From_Api/Data/not_dataset/meepo_matchup_vs.json'
 with_file_path = 'C:/work/DotaHelper_Startap/Data_From_Api/Data/not_dataset/meepo_matchup_with.json'
 win_rate_file_path = 'C:/work/DotaHelper_Startap/Data_From_Api/Data/not_dataset/win_data_for_all.json'
-raw_matches_folder = 'raw_matches'
-output_csv_path ='match_dataset.csv'
+raw_matches_folder = 'raw_test_matches'
+output_csv_path ='match_test_dataset.csv'
 
 # Создаем папку raw_matches если ее нет
 Path(raw_matches_folder).mkdir(exist_ok=True)
