@@ -1,49 +1,97 @@
 from ultralytics import YOLO
 import cv2
+import json
+import re
+from datetime import datetime
 
-# Модель
-model_path = 'C:/Mirea_Projects/DotaHelper_Startap/Data_Recognition/src/ml_model/best_2.pt'
-model = YOLO(model_path)
+# Конфигурация
+MODEL_PATH = 'C:/work/DotaHelper_Startap/Data_Recognition/src/ml_model/best_2.pt'
+IMAGE_PATH = 'C:/work/DotaHelper_Startap/Data_Recognition/src/ml_model/combined_screenshot_1740163193.png'
+OUTPUT_JSON = 'detection_results.json'
+CONFIDENCE_THRESHOLD = 0.8  # Порог уверенности для фильтрации
+HERO_PATTERN = re.compile(r'(.+?)hero')  # Шаблон для извлечения имени героя
 
-# Обработка изображения
-image_path = 'C:\Mirea_Projects\DotaHelper_Startap\Data_Recognition\src\ml_model\combined_screenshot_1740225874.png'
-image = cv2.imread(image_path)
-resized_image = cv2.resize(image, (600, 440))
+def extract_hero_name(class_name):
+    """Извлекает имя героя из названия класса"""
+    match = HERO_PATTERN.search(class_name)
+    return match.group(1) if match else None
 
-results = model(resized_image)
+def process_image(image_path, model):
+    """Обрабатывает изображение и возвращает структурированные данные"""
+    image = cv2.imread(image_path)
+    if image is None:
+        raise FileNotFoundError(f"Изображение не найдено: {image_path}")
 
-confidence_threshold = 0.8  # Порог уверенности
-object_counter = 1          # Счетчик объектов
-detected_objects = {}
+    resized_image = cv2.resize(image, (600, 440))
+    results = model(resized_image)
 
-# Обработка результатов
-for result in results:
-    boxes = result.boxes  # Bounding boxes
-    for box in boxes:
-        class_id = int(box.cls)  # Класс
-        confidence = float(box.conf)  # Уверенность
-        if confidence >= confidence_threshold:
-            class_name = model.names[class_id]  # Название класса
-            # Сохраняем сопоставление: номер -> (класс, уверенность)
-            detected_objects[object_counter] = (class_name, confidence)
+    detection_data = {
+        'hero': None,
+        'items': [],
+        'timestamp': datetime.now().isoformat(),
+        'image_size': f"{image.shape[1]}x{image.shape[0]}"
+    }
 
-            # Получение координат bounding box
-            x1, y1, x2, y2 = map(int, box.xyxy[0])
+    for result in results:
+        for box in result.boxes:
+            if float(box.conf) < CONFIDENCE_THRESHOLD:
+                continue
 
-            # Рисование контуров
-            cv2.rectangle(resized_image, (x1, y1), (x2, y2), (0, 255, 0), 2)
-            label = f"{object_counter}"
-            cv2.putText(resized_image, label, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
+            class_name = model.names[int(box.cls)]
+            bbox = [round(float(x), 2) for x in box.xyxy[0].tolist()]
 
-            object_counter += 1
+            # Обработка героев
+            print(class_name)
+            if '- hero' in class_name:
+                hero_name = extract_hero_name(class_name)
+                if hero_name:
+                    detection_data['hero'] = {
+                        'name': hero_name,
+                        'full_class': class_name,
+                        'confidence': round(float(box.conf), 4),
+                        'bbox': bbox
+                    }
+            # Обработка предметов
+            else:
+                detection_data['items'].append({
+                    'class': class_name,
+                    'confidence': round(float(box.conf), 4),
+                    'bbox': bbox
+                })
 
+    return detection_data
 
-if detected_objects:
-    for number, (class_name, confidence) in detected_objects.items():
-        print(f"{number}: {class_name}, Confidence: {confidence:.2f}")
-else:
-    print("Ничего не распознано.")
+def save_to_json(data, filename):
+    """Сохраняет данные в JSON файл"""
+    with open(filename, 'w', encoding='utf-8') as f:
+        json.dump(data, f, indent=2, ensure_ascii=False)
+    print(f"Результаты сохранены в {filename}")
 
-cv2.imshow("Detected Objects", resized_image)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+def main():
+    try:
+        # Инициализация модели
+        model = YOLO(MODEL_PATH)
+
+        # Обработка изображения
+        detection_data = process_image(IMAGE_PATH, model)
+        res = (list(detection_data.items()))
+        print(res)
+        # Вывод и сохранение результатов
+        if detection_data['hero']:
+            print(f"Герой обнаружен: {detection_data['hero']['name']} "
+                  f"(уверенность: {detection_data['hero']['confidence']:.2f})")
+
+            if detection_data['items']:
+                print("\nОбнаруженные предметы:")
+                for item in detection_data['items']:
+                    print(f"- {item['class']} (уверенность: {item['confidence']:.2f})")
+        else:
+            print("Герои не обнаружены")
+
+        save_to_json(detection_data, OUTPUT_JSON)
+
+    except Exception as e:
+        print(f"Ошибка: {str(e)}")
+
+if __name__ == "__main__":
+    main()

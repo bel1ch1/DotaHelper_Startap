@@ -1,0 +1,47 @@
+{
+  "hero": {
+    "name": "Shadow Fiend arcana - ",
+    "full_class": "Shadow Fiend arcana - hero",
+    "confidence": 0.9525,
+    "bbox": [
+      31.09,
+      226.2,
+      97.88,
+      418.15
+    ]
+  },
+  "items": [
+    {
+      "class": "Black King Bar - item",
+      "confidence": 0.9579,
+      "bbox": [
+        505.92,
+        236.69,
+        542.56,
+        307.03
+      ]
+    },
+    {
+      "class": "Boots of Travel - item",
+      "confidence": 0.9548,
+      "bbox": [
+        428.57,
+        236.45,
+        465.15,
+        306.79
+      ]
+    },
+    {
+      "class": "Blink Dagger - item",
+      "confidence": 0.952,
+      "bbox": [
+        467.47,
+        237.0,
+        503.81,
+        306.95
+      ]
+    }
+  ],
+  "timestamp": "2025-04-05T17:46:57.999800",
+  "image_size": "1020x300"
+}

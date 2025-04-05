@@ -1,135 +1,100 @@
-import json
-import mss
 import mss.tools
 import time
-import cv2
 from PIL import Image
 import pygetwindow as gw
-import os
 from ultralytics import YOLO
+import json
+import os
 
-# Путь к модели YOLO
-model_path = 'C:/Mirea_Projects/DotaHelper_Startap/Capturing_Dota/ml_model/best_1.pt'
+# Constantes
+MODEL_PATH = 'C:/work/DotaHelper_Startap/Data_Recognition/src/ml_model/best_2.pt'
+SCREENSHOTS_DIR = 'C:/work/DotaHelper_Startap/Capturing_Dota/src/Captured_screens'
+RESULTS_DIR = 'C:/work/DotaHelper_Startap/Capturing_Dota/src/Results'
+CONFIDENCE_THRESHOLD = 0.8  # Порог уверенности для детекции
+CAPTURE_DELAY = 3  # Задержка между скриншотами (секунды)
 
-# Загрузка модели
-model = YOLO(model_path)
+os.makedirs(SCREENSHOTS_DIR, exist_ok=True)
+os.makedirs(RESULTS_DIR, exist_ok=True)
 
-def capture_dota2_window():
-    # Находим окно Dota 2
+# Model
+model = YOLO(MODEL_PATH)
+
+def capture_and_process():
+    """Захватывает скриншот, обрабатывает его и удаляет после распознавания."""
     dota_windows = gw.getWindowsWithTitle('Dota 2')
 
-    # Проверяем, активно ли окно Dota 2
-    if dota_windows and dota_windows[0].isActive:
-        dota_window = dota_windows[0]
-
-        # Получаем координаты окна Dota 2
-        left, top, width, height = dota_window.left, dota_window.top, dota_window.width, dota_window.height
-
-        with mss.mss() as sct:
-            top_region = {
-                'top': top,
-                'left': left,
-                'width': width,
-                'height': 100  # Высота верхней части
-            }
-            top_screenshot = sct.grab(top_region)
-
-            bottom_region = {
-                'top': top + height - 300,  # 300 пикселей снизу (включая 100 вверх)
-                'left': left,
-                'width': width,
-                'height': 300  # Высота нижней части
-            }
-            bottom_screenshot = sct.grab(bottom_region)
-
-            # Преобразуем снимки в изображения PIL
-            top_image = Image.frombytes('RGB', top_screenshot.size, top_screenshot.rgb)
-            bottom_image = Image.frombytes('RGB', bottom_screenshot.size, bottom_screenshot.rgb)
-
-            # Склеивание 2-ух скринов
-            combined_image = Image.new('RGB', (top_image.width, top_image.height + 200))
-            combined_image.paste(top_image, (0, 0))
-            combined_image.paste(bottom_image.crop((0, 100, bottom_image.width, bottom_image.height)), (0, top_image.height))
-
-            # Сохранение
-            filename = f'combined_screenshot_{int(time.time())}.png'
-            save_path = f'C:/Mirea_Projects/DotaHelper_Startap/Capturing_Dota/experiments/{filename}'
-            combined_image.save(save_path)
-            print(f"Скриншот сохранен: {filename}")
-
-            # Обработка моделью
-            process(save_path)
-
-            # Удаление скрина (опционально)
-            os.remove(save_path)
-
-    else:
+    if not dota_windows or not dota_windows[0].isActive:
         print("Окно Dota 2 не активно или не найдено.")
+        return None
 
+    window = dota_windows[0]
+    left, top, width, height = window.left, window.top, window.width, window.height
 
-def process(image_path):
-    """
-    Обработка изображения с помощью модели YOLO.
-    """
-    # Загрузка изображения
-    image = cv2.imread(image_path)
+    with mss.mss() as sct:
+        # Области захвата (верхняя и нижняя части)
+        left_crop = int(width * 0.25)
+        right_crop = int(width * 0.25)
+        top_height = int(height * 0.1)
+        bottom_height = int(height * 0.2)
 
-    # Сжатие
-    resized_image = cv2.resize(image, (600, 440))
+        # Делаем скриншоты
+        top_shot = sct.grab({
+            'top': top,
+            'left': left + left_crop,
+            'width': width - left_crop - right_crop,
+            'height': top_height
+        })
+        bottom_shot = sct.grab({
+            'top': top + height - bottom_height,
+            'left': left + left_crop,
+            'width': width - left_crop - right_crop,
+            'height': bottom_height
+        })
 
-    # Обработка моделью
-    results = model(resized_image)
+        # Склеиваем изображение
+        combined = Image.new('RGB', (top_shot.width, top_shot.height + bottom_shot.height))
+        combined.paste(Image.frombytes('RGB', top_shot.size, top_shot.rgb), (0, 0))
+        combined.paste(Image.frombytes('RGB', bottom_shot.size, bottom_shot.rgb), (0, top_shot.height))
 
-    # Порог уверенности
-    confidence_threshold = 0.7
+        # Сохраняем скриншот временно
+        timestamp = int(time.time())
+        screenshot_path = f'{SCREENSHOTS_DIR}/combined_{timestamp}.png'
+        combined.save(screenshot_path)
 
-    # Список для хранения распознанных классов
-    detected_classes = []
+        # Обработка моделью YOLO
+        results = model(combined.resize((600, 440)))  # Масштабируем для модели
+        detected_objects = {}
 
-    # Флаг для проверки наличия героя
-    hero_detected = False
+        for result in results:
+            for box in result.boxes:
+                if float(box.conf) >= CONFIDENCE_THRESHOLD:
+                    class_name = model.names[int(box.cls)]
+                    detected_objects[len(detected_objects) + 1] = {
+                        'class': class_name,
+                        'confidence': float(box.conf),
+                        'timestamp': timestamp
+                    }
 
-    # Обработка результатов
-    for result in results:
-        boxes = result.boxes
-        for box in boxes:
-            class_id = int(box.cls)  # Класс
-            confidence = float(box.conf)  # Уверенность
-            if confidence >= confidence_threshold:
-                class_name = model.names[class_id]  # Название класса
-                detected_classes.append((class_name, confidence))
-                if "hero" in class_name.lower():
-                    hero_detected = True
+        # Сохраняем результаты в JSON
+        if detected_objects:
+            result_path = f'{RESULTS_DIR}/result_{timestamp}.json'
+            with open(result_path, 'w') as f:
+                json.dump(detected_objects, f, indent=4)
+            print(f"Обнаружено объектов: {len(detected_objects)}. Результаты сохранены в {result_path}")
+        else:
+            print("Ничего не распознано.")
 
-    if hero_detected:
-        json_data = {
-            "items": []
-        }
-        for class_name, confidence in detected_classes:
-            json_data["items"].append({
-                "class": class_name,
-                "confidence": confidence
-            })
+        # Удаляем скриншот после обработки
+        os.remove(screenshot_path)
+        print(f"Скриншот {screenshot_path} удалён.")
 
-        # Сохранение JSON
-        json_filename = f'results_{int(time.time())}.json'
-        json_save_path = f'C:/Mirea_Projects/DotaHelper_Startap/Capturing_Dota/experiments/{json_filename}'
-        with open(json_save_path, 'w') as json_file:
-            json.dump(json_data, json_file, indent=4)
-        print(f"JSON сохранен: {json_filename}")
+        return detected_objects
 
-    # Вывод списка распознанных классов
-    if detected_classes:
-        print("Распознанные классы:")
-        for class_name, confidence in detected_classes:
-            print(f"Class: {class_name}, Confidence: {confidence:.2f}")
-    else:
-        print("Ничего не распознано.")
-
-
-# Точка входа
+# Основной цикл
 if __name__ == "__main__":
-    while True:
-        capture_dota2_window()
-
-        time.sleep(0.5)
+    try:
+        while True:
+            capture_and_process()
+            time.sleep(CAPTURE_DELAY)
+    except KeyboardInterrupt:
+        print("Программа остановлена пользователем.")
