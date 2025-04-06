@@ -7,9 +7,9 @@ import json
 import os
 
 # Constantes
-MODEL_PATH = 'C:/work/DotaHelper_Startap/Data_Recognition/src/ml_model/best_2.pt'
-SCREENSHOTS_DIR = 'C:/work/DotaHelper_Startap/Capturing_Dota/src/Captured_screens'
-RESULTS_DIR = 'C:/work/DotaHelper_Startap/Capturing_Dota/src/Results'
+MODEL_PATH = '/home/admin/work/DotaHelper_Startap/Data_Recognition/src/ml_model/best_2.pt'
+SCREENSHOTS_DIR = '/home/admin/work/DotaHelper_Startap/Data_Recognition/src/ml_model/combined_screenshot_1740163190.png'
+RESULTS_DIR = '/home/admin/work/DotaHelper_Startap/Data_Recognition/src/ml_model/'
 CONFIDENCE_THRESHOLD = 0.8  # Порог уверенности для детекции
 CAPTURE_DELAY = 3  # Задержка между скриншотами (секунды)
 
