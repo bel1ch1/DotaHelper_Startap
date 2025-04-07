@@ -160,27 +160,6 @@ def process_image(image_path, model):
         print(f"Ошибка обработки изображения: {e}")
         return data_vector, []
 
-def print_vector_info(vector, detected_items):
-    """Выводит подробную информацию о векторе"""
-    print("\n" + "="*60)
-    print("ФИНАЛЬНЫЙ ВЕКТОР ДАННЫХ (50 ЭЛЕМЕНТОВ)")
-    print("="*60)
-    
-    # Вывод структуры вектора
-    print("\nСтруктура вектора:")
-    for name, pos in sorted(ITEM_MAPPING.items(), key=lambda x: x[1]):
-        value = vector[pos]
-        print(f"[{pos:2d}] {name:20s}: {value}")
-    
-    # Вывод обнаруженных предметов
-    if detected_items:
-        print("\nОбнаруженные предметы:")
-        for item_name, pos in detected_items:
-            print(f"- {item_name} (позиция {pos})")
-    
-    # Вывод полного вектора
-    print("\nВектор в формате списка:")
-    print(vector)
 
 if __name__ == "__main__":
     mapa = {
