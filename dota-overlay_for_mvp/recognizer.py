@@ -6,12 +6,11 @@ from ultralytics import YOLO
 
 # Конфигурация
 MODEL_PATH = '/home/bell/wkorkStaff/DotaHelper_Startap/dota-overlay_for_mvp/best.pt'
-IMAGE_PATH = '/home/bell/wkorkStaff/DotaHelper_Startap/dota-overlay_for_mvp/test_recognizer.py/combined_screenshot_1743890805.png'
+IMAGE_PATH = '/home/bell/wkorkStaff/DotaHelper_Startap/dota-overlay_for_mvp/test_recognizer.py/combined_screenshot_1743890952.png'
 CONFIDENCE_THRESHOLD = 0.8
 
 # Словарь соответствия названий/ID предметов и их позиций в векторе
 ITEM_MAPPING = {
-    # Константные поля (0-20)
     "stage": 0,
     "kill_advantage": 1,
     "team_advantage": 2,
@@ -68,13 +67,9 @@ ITEM_MAPPING = {
 
 class DotaPredictor:
     def __init__(self, onnx_path, metadata_path):
-        # Загрузка модели ONNX
         self.session = ort.InferenceSession(onnx_path)
-
-        # Загрузка метаданных
         with open(metadata_path) as f:
             self.meta = json.load(f)
-
         self.feature_means = np.array(self.meta['feature_means'])
         self.feature_stds = np.array(self.meta['feature_stds'])
         self.class_to_item = {int(k): int(v) for k, v in self.meta['class_to_item'].items()}
@@ -203,7 +198,6 @@ if __name__ == "__main__":
     
     # Обработка изображения
     result_vector, detected_items = process_image(IMAGE_PATH, yolo_model)
-        # Инициализация
     print(result_vector)
     predictor = DotaPredictor(
         onnx_path="model.onnx",
@@ -212,6 +206,7 @@ if __name__ == "__main__":
 
     # Предсказание
     items = predictor.predict(result_vector)
+    print(items)
     for item in items:
         print(mapa.get(item))
 
