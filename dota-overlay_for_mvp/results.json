@@ -1,0 +1,40 @@
+{
+    "items": [
+        {
+            "class": "Scythe of Vyse",
+            "confidence": 0.9616233706474304
+        },
+        {
+            "class": "Force Staff",
+            "confidence": 0.9429959058761597
+        },
+        {
+            "class": "Shadow Blade",
+            "confidence": 0.9412417411804199
+        },
+        {
+            "class": "Dust of Appearance",
+            "confidence": 0.9357760548591614
+        },
+        {
+            "class": "Orchid Malevolence",
+            "confidence": 0.9351667165756226
+        },
+        {
+            "class": "wraithKing_hero_0",
+            "confidence": 0.9298622608184814
+        },
+        {
+            "class": "Wind Waker",
+            "confidence": 0.9296852946281433
+        },
+        {
+            "class": "Euls Scepter of Divinity",
+            "confidence": 0.9194716215133667
+        },
+        {
+            "class": "Ghost Scepter",
+            "confidence": 0.9116690754890442
+        }
+    ]
+}
